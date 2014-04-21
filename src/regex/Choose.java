@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-// Test
-
 public class Choose extends Pattern {
     private List<Pattern> patterns;
 

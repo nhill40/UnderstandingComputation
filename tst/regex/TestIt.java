@@ -7,8 +7,6 @@ import static org.junit.Assert.*;
 
 public class TestIt {
 
-    // Test
-
     @Test
     public void test() {
         Pattern pattern = new Repeat(new Choose(new Concatenate(new Literal('a'), new Literal('b')), new Literal('a')));
