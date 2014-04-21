@@ -43,5 +43,11 @@ public class TestIt {
         assertFalse(pattern.matches("a"));
         assertFalse(pattern.matches("ab"));
         assertTrue(pattern.matches("abc"));
+
+        pattern = new Choose(new Literal('a'), new Literal('b'));
+        assertEquals("/a|b/", pattern.toRegEx());
+        assertTrue(pattern.matches("a"));
+        assertTrue(pattern.matches("b"));
+        assertFalse(pattern.matches("c"));
     }
 }
