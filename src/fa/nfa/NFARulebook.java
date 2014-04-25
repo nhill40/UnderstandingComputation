@@ -21,7 +21,7 @@ public class NFARulebook {
      * @return the current states after considering all possible free moves.
      */
     public Set<State> followFreeMoves(Set<State> states) {
-        Set<State> moreStates = nextStates(states, '\0');
+        Set<State> moreStates = nextStates(states, null);
 
         if (states.containsAll(moreStates)) {
             return states;
@@ -41,7 +41,7 @@ public class NFARulebook {
      * @param character the character to search the rules for.
      * @return the next possible states.
      */
-    public Set<State> nextStates(Set<State> states, char character) {
+    public Set<State> nextStates(Set<State> states, Character character) {
         Set<State> possibleStates = new HashSet<State>();
 
         for (State state : states) {
@@ -58,7 +58,7 @@ public class NFARulebook {
      * @param character the character to search the rules for.
      * @return
      */
-    public Set<State> followRulesFor(State state, char character) {
+    public Set<State> followRulesFor(State state, Character character) {
         Set<State> possibleStates = new HashSet<State>();
 
         for (FARule rule : rulesFor(state, character)) {
@@ -74,7 +74,7 @@ public class NFARulebook {
      * @param character the character to search the rules for.
      * @return the applicable rule.
      */
-    public Set<FARule> rulesFor(State state, char character) {
+    public Set<FARule> rulesFor(State state, Character character) {
         Set<FARule> applicableRules = new HashSet<FARule>();
         for (FARule rule : rules) {
             if (rule.appliesTo(state, character)) {

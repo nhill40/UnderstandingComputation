@@ -1,11 +1,19 @@
 package regex;
 
-/**
- * Created with IntelliJ IDEA.
- * User: nhill
- * Date: 4/22/14
- * Time: 9:53 AM
- * To change this template use File | Settings | File Templates.
- */
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 public class ChooseTest {
+
+    @Test
+    public void test_matches() {
+        Pattern pattern = new Choose(new Literal('a'), new Literal('b'));
+        assertEquals("/a|b/", pattern.toRegEx());
+        assertTrue(pattern.matches("a"));
+        assertTrue(pattern.matches("b"));
+        assertFalse(pattern.matches("c"));
+    }
 }

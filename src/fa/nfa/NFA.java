@@ -38,7 +38,7 @@ public class NFA {
      * Reads in a character, passes it and the current states to the rulebook to get the next possible states.
      * @param character the character to evaluate.
      */
-    public void readCharacter(char character) {
+    public void readCharacter(Character character) {
         currentStates = rulebook.nextStates(getCurrentStatesConsideringFreeMoves(), character);
     }
 
@@ -50,7 +50,7 @@ public class NFA {
         if (string.toCharArray().length == 0) {
             readCharacter('\0');
         } else {
-            for (char character : string.toCharArray()) {
+            for (Character character : string.toCharArray()) {
                 readCharacter(character);
             }
         }

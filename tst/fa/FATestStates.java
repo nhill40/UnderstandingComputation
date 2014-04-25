@@ -1,11 +1,10 @@
 package fa;
 
-/**
- * Created with IntelliJ IDEA.
- * User: nhill
- * Date: 4/25/14
- * Time: 9:39 AM
- * To change this template use File | Settings | File Templates.
- */
 public class FATestStates {
+    public static final State STATE1 = new State();
+    public static final State STATE2 = new State();
+    public static final State STATE3 = new State();
+    public static final State STATE4 = new State();
+    public static final State STATE5 = new State();
+    public static final State STATE6 = new State();
 }

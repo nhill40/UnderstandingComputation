@@ -6,10 +6,10 @@ package fa;
  */
 public class FARule {
     private State state;
-    private char character;
+    private Character character;
     private State nextState;
 
-    public FARule(State state, char character, State nextState) {
+    public FARule(State state, Character character, State nextState) {
         this.state = state;
         this.character = character;
         this.nextState = nextState;
@@ -21,8 +21,8 @@ public class FARule {
      * @param character the character to check for.
      * @return whether this rule applies to the given state/character.
      */
-    public boolean appliesTo(State state, char character) {
-        return this.state == state && this.character == character;
+    public boolean appliesTo(State state, Character character) {
+        return this.state == state && ((this.character == null && character == null) || (this.character == character));
     }
 
     /**

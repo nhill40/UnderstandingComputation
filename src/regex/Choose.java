@@ -48,8 +48,8 @@ public class Choose extends Pattern {
         rules.addAll(firstNFADesign.getRulebook().getRules());
         rules.addAll(secondNFADesign.getRulebook().getRules());
 
-        rules.add(new FARule(startState, '\0', firstNFADesign.getStartState()));
-        rules.add(new FARule(startState, '\0', secondNFADesign.getStartState()));
+        rules.add(new FARule(startState, null, firstNFADesign.getStartState()));
+        rules.add(new FARule(startState, null, secondNFADesign.getStartState()));
 
         NFARulebook rulebook = new NFARulebook(rules);
 

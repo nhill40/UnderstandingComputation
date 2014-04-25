@@ -24,7 +24,7 @@ public class DFARulebook {
      * @param character the character to search the rules for.
      * @return the next state.
      */
-    public State nextState(State state, char character) {
+    public State nextState(State state, Character character) {
         return ruleFor(state, character).follow();
     }
 
@@ -34,7 +34,7 @@ public class DFARulebook {
      * @param character the character to search the rules for.
      * @return the applicable rule.
      */
-    public FARule ruleFor(State state, char character) {
+    public FARule ruleFor(State state, Character character) {
         for (FARule rule : rules) {
             if (rule.appliesTo(state, character)) {
                 return rule;

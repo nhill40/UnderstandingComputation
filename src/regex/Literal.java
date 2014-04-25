@@ -9,9 +9,9 @@ import java.util.Arrays;
 
 public class Literal extends Pattern {
 
-    private char character;
+    private Character character;
 
-    public Literal(char character) {
+    public Literal(Character character) {
         this.character = character;
     }
 
@@ -27,10 +27,11 @@ public class Literal extends Pattern {
 
     @Override
     public NFADesign toNFADesign() {
-        State literalState1 = new State();
-        return new NFADesign(literalState1,
-                Arrays.asList(literalState1),
+        State startState = new State();
+        State acceptState = new State();
+        return new NFADesign(startState,
+                Arrays.asList(acceptState),
                 new NFARulebook(Arrays.asList(
-                        new FARule(literalState1, character, literalState1))));
+                        new FARule(startState, character, acceptState))));
     }
 }

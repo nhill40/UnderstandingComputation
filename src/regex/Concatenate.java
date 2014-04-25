@@ -46,7 +46,7 @@ public class Concatenate extends Pattern {
         rules.addAll(secondNFADesign.getRulebook().getRules());
 
         for (State state : firstNFADesign.getAcceptStates()) {
-            rules.add(new FARule(state, '\0', secondNFADesign.getStartState()));
+            rules.add(new FARule(state, null, secondNFADesign.getStartState()));
         }
 
         NFARulebook rulebook = new NFARulebook(rules);

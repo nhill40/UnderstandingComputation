@@ -31,7 +31,7 @@ public class DFA {
      * Reads in a character, passes it and the current state to the rulebook to move itself to the next state.
      * @param character the character to evaluate.
      */
-    public void readCharacter(char character) {
+    public void readCharacter(Character character) {
         currentState = rulebook.nextState(currentState, character);
     }
 
@@ -40,7 +40,7 @@ public class DFA {
      * @param string the characters to evaluate.
      */
     public void readString(String string) {
-        for (char character : string.toCharArray()) {
+        for (Character character : string.toCharArray()) {
             readCharacter(character);
         }
     }
