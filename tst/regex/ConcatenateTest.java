@@ -26,4 +26,13 @@ public class ConcatenateTest {
         assertFalse(pattern.matches("ab"));
         assertTrue(pattern.matches("abc"));
     }
+
+    @Test
+    public void test_withChoose() {
+        Pattern pattern = new Concatenate(new Literal('a'), new Choose(new Empty(), new Literal('b')));
+        assertEquals("/a(|b)/", pattern.toRegEx());
+        assertTrue(pattern.matches("a"));
+        assertFalse(pattern.matches("b"));
+        assertTrue(pattern.matches("ab"));
+    }
 }

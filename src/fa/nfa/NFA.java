@@ -24,13 +24,12 @@ public class NFA {
     public boolean accepting() {
         boolean accepting = false;
 
-        for (State currentState : currentStates) {
+        for (State currentState : getCurrentStatesConsideringFreeMoves()) {
             if (acceptStates.contains(currentState)) {
                 accepting = true;
                 break;
             }
         }
-
         return accepting;
     }
 

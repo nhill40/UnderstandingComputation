@@ -1,6 +1,5 @@
 package regex;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -15,7 +14,6 @@ public class PatternTest {
         assertEquals("/(ab|a)*/", pattern.toRegEx());
     }
 
-    @Ignore
     @Test
     public void test_compoundPatterns() {
         Pattern pattern = new Repeat(
@@ -24,7 +22,7 @@ public class PatternTest {
                         new Choose(new Empty(), new Literal('b'))));
         assertEquals("/(a(|b))*/", pattern.toRegEx());
         assertTrue(pattern.matches(""));
-        assertTrue(pattern.matches("a"));
+        assertTrue(pattern.matches("a")); // false for both - shouldn't
         assertTrue(pattern.matches("ab"));
         assertTrue(pattern.matches("aba"));
         assertTrue(pattern.matches("abab"));

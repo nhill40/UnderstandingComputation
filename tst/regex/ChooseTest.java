@@ -16,4 +16,13 @@ public class ChooseTest {
         assertTrue(pattern.matches("b"));
         assertFalse(pattern.matches("c"));
     }
+
+    @Test
+    public void test_matchesWithEmptyString() {
+        Pattern pattern = new Choose(new Empty(), new Literal('b'));
+        assertEquals("/|b/", pattern.toRegEx());
+        assertTrue(pattern.matches(""));
+        assertFalse(pattern.matches("a"));
+        assertTrue(pattern.matches("b"));
+    }
 }
