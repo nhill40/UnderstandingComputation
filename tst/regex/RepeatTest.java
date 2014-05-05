@@ -9,7 +9,7 @@ import static org.junit.Assert.assertTrue;
 public class RepeatTest {
 
     @Test
-    public void test() {
+    public void test_matches() {
         Pattern pattern = new Repeat(new Literal('a'));
         assertEquals("/a*/", pattern.toRegEx());
         assertTrue(pattern.matches(""));

@@ -7,9 +7,14 @@ import fa.nfa.NFARulebook;
 
 import java.util.Arrays;
 
+/**
+ *  Example:  "a"
+ *  Simple implementation:  just two states - a start state and accept state.  One rule to join those two states
+ *  together via an input character (initialized in constructor).
+ */
 public class Literal extends Pattern {
 
-    private Character character;
+    private final Character character;
 
     public Literal(Character character) {
         this.character = character;

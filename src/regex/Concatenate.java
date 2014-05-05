@@ -9,6 +9,15 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ *  Examples:  "ab", "a(|b)"
+ *  Combines two regex patterns and only accepts if it finds those 2 patterns mashed up against one another.
+ *  This could be simple as two character literals (e.g. "ab") or a concatenation of 2 more complicated regex
+ *  patterns (e.g. "a(|b)" < a character literal mashed together with a "Choose").
+ *  To achieve this, we build an NFA taking the start state from the first pattern and any accept state(s) from the
+ *  second pattern.  The rules include all rules from both the first and second patterns as well as "free move" rules to
+ *  connect the first patterns old accept state(s) to the start state of the second pattern.
+ */
 public class Concatenate extends Pattern {
     private List<Pattern> patterns;
 
