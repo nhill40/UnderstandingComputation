@@ -2,6 +2,17 @@ package regex;
 
 import fa.nfa.NFADesign;
 
+/**
+ * This is an abstract representation of a regex pattern.  This class provides some important functionality to its
+ * subclasses including:
+ * (1) A helper method to allow string matching.
+ * (2) the ability to understand where to place parenthesis based on relative precedence.
+ * (3) the ability to spit out a properly formatted regex representation of the pattern (e.g. "/a/").
+ *
+ * Subclasses are left to provide a couple vital pieces of information:
+ * (1) How to convert themselves to an NFA.
+ * (2) What their precedence is relative to the other pattern implementations.
+ */
 public abstract class Pattern {
 
     /**

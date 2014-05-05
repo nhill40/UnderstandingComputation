@@ -9,6 +9,12 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Example:  "a|b"
+ * Accepts one or the other.  Implementation is relatively simple:  we create a new start state that is connected with
+ * "free move" rules to the old start states of the first and second patterns.  Accept states are simply the superset of
+ * the accept state(s) from the first and second patterns.
+ */
 public class Choose extends Pattern {
     private List<Pattern> patterns;
 
