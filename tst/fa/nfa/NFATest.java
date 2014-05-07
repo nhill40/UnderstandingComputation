@@ -97,4 +97,20 @@ public class NFATest {
         assertFalse(nfaDesign.accepts("aaaaa"));
         assertTrue(nfaDesign.accepts("aaaaaa"));
     }
+
+    /**
+     * Equivalent to same-named test found in DFATest.
+     */
+    @Test
+    public void test_NFAtoDFAConversion_baseline() {
+        NFARulebook rulebook = new NFARulebook(Arrays.asList(
+                new FARule(STATE1, 'a', STATE1), new FARule(STATE1, 'a', STATE2), new FARule(STATE1, null, STATE2),
+                new FARule(STATE2, 'b', STATE3),
+                new FARule(STATE3, null, STATE2), new FARule(STATE3, 'b', STATE1)));
+
+        NFADesign nfaDesign = new NFADesign(STATE1, Arrays.asList(STATE3), rulebook);
+        assertFalse(nfaDesign.accepts("aaa"));
+        assertTrue(nfaDesign.accepts("aab"));
+        assertTrue(nfaDesign.accepts("bbbabb"));
+    }
 }
