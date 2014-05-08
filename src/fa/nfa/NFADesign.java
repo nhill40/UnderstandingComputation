@@ -2,6 +2,7 @@ package fa.nfa;
 
 import fa.State;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,8 +28,8 @@ public class NFADesign {
     }
 
     /**
-     * Creates a just-in-time DFA based on the provided start/accept states and rulebook.
-     * @return the DFA.
+     * Creates a just-in-time NFA based on the start/accept states and rulebook.
+     * @return the NFA.
      */
     public NFA toNFA() {
         Set<State> currentStates = new HashSet<State>();
@@ -37,7 +38,23 @@ public class NFADesign {
     }
 
     /**
-     * Bounces a string against a just-in-time created DFA.
+     * Creates a just-in-time NFA based on the provided current states, the accept states, and rulebook.
+     * @return the NFA.
+     */
+    public NFA toNFA(Set<State> currentStates) {
+        return new NFA(currentStates, acceptStates, rulebook);
+    }
+
+    /**
+     * Creates a just-in-time NFA based on the provided current state, the accept states, and rulebook.
+     * @return the NFA.
+     */
+    public NFA toNFA(State currentState) {
+        return new NFA(new HashSet<State>(Arrays.asList(currentState)), acceptStates, rulebook);
+    }
+
+    /**
+     * Bounces a string against a just-in-time created NFA.
      * @param string the string to evaluate for acceptance.
      * @return whether or not the string was accepted.
      */

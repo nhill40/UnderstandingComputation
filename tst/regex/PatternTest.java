@@ -22,7 +22,7 @@ public class PatternTest {
                         new Choose(new Empty(), new Literal('b'))));
         assertEquals("/(a(|b))*/", pattern.toRegEx());
         assertTrue(pattern.matches(""));
-        assertTrue(pattern.matches("a")); // false for both - shouldn't
+        assertTrue(pattern.matches("a"));
         assertTrue(pattern.matches("ab"));
         assertTrue(pattern.matches("aba"));
         assertTrue(pattern.matches("abab"));

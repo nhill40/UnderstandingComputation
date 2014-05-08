@@ -59,7 +59,7 @@ public class NFA {
      * Provides current states taking any possible free moves into consideration.
      * @return Possible current states taking free moves into consideration.
      */
-    private Set<State> getCurrentStatesConsideringFreeMoves() {
+    public Set<State> getCurrentStatesConsideringFreeMoves() {
         return rulebook.followFreeMoves(currentStates);
     }
 

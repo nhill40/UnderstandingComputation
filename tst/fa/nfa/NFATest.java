@@ -14,6 +14,7 @@ import static fa.FATestStates.STATE3;
 import static fa.FATestStates.STATE4;
 import static fa.FATestStates.STATE5;
 import static fa.FATestStates.STATE6;
+import static fa.nfa.NFATestRules.NFA_RULEBOOK;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -103,14 +104,40 @@ public class NFATest {
      */
     @Test
     public void test_NFAtoDFAConversion_baseline() {
-        NFARulebook rulebook = new NFARulebook(Arrays.asList(
-                new FARule(STATE1, 'a', STATE1), new FARule(STATE1, 'a', STATE2), new FARule(STATE1, null, STATE2),
-                new FARule(STATE2, 'b', STATE3),
-                new FARule(STATE3, null, STATE2), new FARule(STATE3, 'b', STATE1)));
-
-        NFADesign nfaDesign = new NFADesign(STATE1, Arrays.asList(STATE3), rulebook);
+        NFADesign nfaDesign = new NFADesign(STATE1, Arrays.asList(STATE3), NFA_RULEBOOK);
         assertFalse(nfaDesign.accepts("aaa"));
         assertTrue(nfaDesign.accepts("aab"));
         assertTrue(nfaDesign.accepts("bbbabb"));
+    }
+
+    @Test
+    public void test_NFASpecifyingCurrentStates() {
+        NFADesign nfaDesign = new NFADesign(STATE1, Arrays.asList(STATE3), NFA_RULEBOOK);
+
+        // Assert existing functionality - convert an NFADesign into a J.I.T. NFA and ask it what it's current states
+        // are, taking possible free moves into account.
+        Set<State> currentStatesConsideringFreeMoves = nfaDesign.toNFA().getCurrentStatesConsideringFreeMoves();
+        assertEquals(2, currentStatesConsideringFreeMoves.size());
+        assertTrue(currentStatesConsideringFreeMoves.containsAll(Arrays.asList(STATE1, STATE2)));
+
+        // Now throw a wrinkle at it - we're now able to convert an NFADesign into a J.I.T. NFA with the added
+        // functionality of specifying the NFA's currentStates (which previously defaulted to the start shape).  We can
+        // now simulate an NFA starting from any of its valid states (i.e. not just the start state).
+        currentStatesConsideringFreeMoves =
+                nfaDesign.toNFA(STATE2).getCurrentStatesConsideringFreeMoves();
+        assertEquals(1, currentStatesConsideringFreeMoves.size());
+        assertTrue(currentStatesConsideringFreeMoves.contains(STATE2));
+
+        currentStatesConsideringFreeMoves =
+                nfaDesign.toNFA(STATE3).getCurrentStatesConsideringFreeMoves();
+        assertEquals(2, currentStatesConsideringFreeMoves.size());
+        assertTrue(currentStatesConsideringFreeMoves.containsAll(Arrays.asList(STATE2, STATE3)));
+
+        NFA nfa = nfaDesign.toNFA(new HashSet<State>(Arrays.asList(STATE2, STATE3)));
+        nfa.readCharacter('b');
+        currentStatesConsideringFreeMoves = nfa.getCurrentStatesConsideringFreeMoves();
+        assertEquals(3, currentStatesConsideringFreeMoves.size());
+        assertTrue(currentStatesConsideringFreeMoves.containsAll(Arrays.asList(STATE1, STATE2, STATE3)));
+        // Refer to NFASimulationTest to see this functionality automated
     }
 }

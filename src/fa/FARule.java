@@ -31,4 +31,8 @@ public class FARule {
     public State follow() {
         return nextState;
     }
+
+    public Character getCharacter() {
+        return character;
+    }
 }

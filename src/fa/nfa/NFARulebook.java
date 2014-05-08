@@ -88,4 +88,12 @@ public class NFARulebook {
     public List<FARule> getRules() {
         return rules;
     }
+
+    public Set<Character> alphabet() {
+        Set<Character> results = new HashSet<Character>();
+        for (FARule rule : rules) {
+            if (rule.getCharacter() != null) results.add(rule.getCharacter());
+        }
+        return results;
+    }
 }
