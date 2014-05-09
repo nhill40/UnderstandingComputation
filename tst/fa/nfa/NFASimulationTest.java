@@ -1,11 +1,13 @@
 package fa.nfa;
 
-import fa.FARule;
+import fa.FAMultiRule;
 import fa.State;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import static fa.FATestStates.STATE1;
@@ -23,19 +25,19 @@ public class NFASimulationTest {
         NFASimulation simulation = new NFASimulation(nfaDesign);
 
         Set<State> currentStates;
-        currentStates = simulation.nextStates(new HashSet<State>(Arrays.asList(STATE1, STATE2)), 'a');
+        currentStates = simulation.nextStates(new LinkedHashSet<State>(Arrays.asList(STATE1, STATE2)), 'a');
         assertEquals(2, currentStates.size());
         assertTrue(currentStates.containsAll(Arrays.asList(STATE1, STATE2)));
 
-        currentStates = simulation.nextStates(new HashSet<State>(Arrays.asList(STATE1, STATE2)), 'b');
+        currentStates = simulation.nextStates(new LinkedHashSet<State>(Arrays.asList(STATE1, STATE2)), 'b');
         assertEquals(2, currentStates.size());
         assertTrue(currentStates.containsAll(Arrays.asList(STATE2, STATE3)));
 
-        currentStates = simulation.nextStates(new HashSet<State>(Arrays.asList(STATE2, STATE3)), 'b');
+        currentStates = simulation.nextStates(new LinkedHashSet<State>(Arrays.asList(STATE2, STATE3)), 'b');
         assertEquals(3, currentStates.size());
         assertTrue(currentStates.containsAll(Arrays.asList(STATE1, STATE2, STATE3)));
 
-        currentStates = simulation.nextStates(new HashSet<State>(Arrays.asList(STATE1, STATE2, STATE3)), 'a');
+        currentStates = simulation.nextStates(new LinkedHashSet<State>(Arrays.asList(STATE1, STATE2, STATE3)), 'a');
         assertEquals(2, currentStates.size());
         assertTrue(currentStates.containsAll(Arrays.asList(STATE1, STATE2)));
     }
@@ -45,6 +47,20 @@ public class NFASimulationTest {
         NFADesign nfaDesign = new NFADesign(STATE1, Arrays.asList(STATE3), NFA_RULEBOOK);
         NFASimulation simulation = new NFASimulation(nfaDesign);
 
-        simulation.rulesFor(new HashSet<State>(Arrays.asList(STATE1, STATE2)));
+        Set<FAMultiRule> rules = simulation.rulesFor(new LinkedHashSet<State>(Arrays.asList(STATE1, STATE2)));
+        assertEquals(2, rules.size());
+        List<String> rulesAsStrings = new ArrayList<String>();
+        for (FAMultiRule rule : rules) {
+            rulesAsStrings.add(rule.toString());
+        }
+        assertTrue(rulesAsStrings.containsAll(Arrays.asList("[1, 2] ---a--> [1, 2]", "[1, 2] ---b--> [2, 3]")));
+
+        rules = simulation.rulesFor(new LinkedHashSet<State>(Arrays.asList(STATE3, STATE2)));
+        assertEquals(2, rules.size());
+        rulesAsStrings = new ArrayList<String>();
+        for (FAMultiRule rule : rules) {
+            rulesAsStrings.add(rule.toString());
+        }
+        assertTrue(rulesAsStrings.containsAll(Arrays.asList("[3, 2] ---a--> []", "[3, 2] ---b--> [2, 1, 3]")));
     }
 }

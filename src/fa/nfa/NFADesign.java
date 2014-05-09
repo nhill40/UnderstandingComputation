@@ -3,7 +3,7 @@ package fa.nfa;
 import fa.State;
 
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -32,7 +32,7 @@ public class NFADesign {
      * @return the NFA.
      */
     public NFA toNFA() {
-        Set<State> currentStates = new HashSet<State>();
+        Set<State> currentStates = new LinkedHashSet<State>();
         currentStates.add(startState);
         return new NFA(currentStates, acceptStates, rulebook);
     }
@@ -50,7 +50,7 @@ public class NFADesign {
      * @return the NFA.
      */
     public NFA toNFA(State currentState) {
-        return new NFA(new HashSet<State>(Arrays.asList(currentState)), acceptStates, rulebook);
+        return new NFA(new LinkedHashSet<State>(Arrays.asList(currentState)), acceptStates, rulebook);
     }
 
     /**

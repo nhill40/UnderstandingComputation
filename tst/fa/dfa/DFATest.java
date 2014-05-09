@@ -1,6 +1,6 @@
 package fa.dfa;
 
-import fa.FARule;
+import fa.FASingleRule;
 import fa.State;
 import org.junit.Test;
 
@@ -52,16 +52,16 @@ public class DFATest {
      */
     @Test
     public void test_NFAtoDFAConversion_baseline() {
-        final State STATE_1_OR_2 = new State();
-        final State STATE_2_OR_3 = new State();
-        final State STATE_NONE = new State();
-        final State STATE_1_2_OR_3 = new State();
+        final State STATE_1_OR_2 = new State("1 or 2");
+        final State STATE_2_OR_3 = new State("2 or 3");
+        final State STATE_NONE = new State("None");
+        final State STATE_1_2_OR_3 = new State("1, 2, or 3");
 
         DFARulebook rulebook = new DFARulebook(Arrays.asList(
-                new FARule(STATE_1_OR_2, 'a', STATE_1_OR_2), new FARule(STATE_1_OR_2, 'b', STATE_2_OR_3),
-                new FARule(STATE_2_OR_3, 'a', STATE_NONE), new FARule(STATE_2_OR_3, 'b', STATE_1_2_OR_3),
-                new FARule(STATE_NONE, 'a', STATE_NONE), new FARule(STATE_NONE, 'b', STATE_NONE),
-                new FARule(STATE_1_2_OR_3, 'b', STATE_1_2_OR_3), new FARule(STATE_1_2_OR_3, 'a', STATE_1_OR_2)
+                new FASingleRule(STATE_1_OR_2, 'a', STATE_1_OR_2), new FASingleRule(STATE_1_OR_2, 'b', STATE_2_OR_3),
+                new FASingleRule(STATE_2_OR_3, 'a', STATE_NONE), new FASingleRule(STATE_2_OR_3, 'b', STATE_1_2_OR_3),
+                new FASingleRule(STATE_NONE, 'a', STATE_NONE), new FASingleRule(STATE_NONE, 'b', STATE_NONE),
+                new FASingleRule(STATE_1_2_OR_3, 'b', STATE_1_2_OR_3), new FASingleRule(STATE_1_2_OR_3, 'a', STATE_1_OR_2)
         ));
 
         DFADesign dfaDesign = new DFADesign(STATE_1_OR_2, Arrays.asList(STATE_2_OR_3, STATE_1_2_OR_3), rulebook);

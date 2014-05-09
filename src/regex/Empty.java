@@ -1,6 +1,6 @@
 package regex;
 
-import fa.FARule;
+import fa.FASingleRule;
 import fa.State;
 import fa.nfa.NFADesign;
 import fa.nfa.NFARulebook;
@@ -30,9 +30,9 @@ public class Empty extends Pattern {
     @Override
     public NFADesign toNFADesign() {
 
-        State startState = new State();
+        State startState = new State("Start State");
         return new NFADesign(startState,
                Arrays.asList(startState),
-                new NFARulebook(Arrays.asList(new FARule(startState, '\0', startState))));
+                new NFARulebook(Arrays.asList(new FASingleRule(startState, '\0', startState))));
     }
 }

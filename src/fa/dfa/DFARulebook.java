@@ -1,20 +1,20 @@
 package fa.dfa;
 
-import fa.FARule;
+import fa.FASingleRule;
 import fa.State;
 
 import java.util.List;
 
 /**
  * Essentially, a collection of rules.
- * (1) A collection of rules
+ * (1) A collection of "single" rules (i.e. rules with exactly 1 current state and exactly 1 next state)
  * (2) Logic for how to lookup the appropriate rule for a given state/input
- * (3) A call to "follow" on the looked up rule to get next state.
+ * (3) A call to "follow" on the looked up rule to get next state
  */
 public class DFARulebook {
-    private List<FARule> rules;
+    private List<FASingleRule> rules;
 
-    public DFARulebook(List<FARule> rules) {
+    public DFARulebook(List<FASingleRule> rules) {
         this.rules = rules;
     }
 
@@ -34,8 +34,8 @@ public class DFARulebook {
      * @param character the character to search the rules for.
      * @return the applicable rule.
      */
-    public FARule ruleFor(State state, Character character) {
-        for (FARule rule : rules) {
+    public FASingleRule ruleFor(State state, Character character) {
+        for (FASingleRule rule : rules) {
             if (rule.appliesTo(state, character)) {
                 return rule;
             }
