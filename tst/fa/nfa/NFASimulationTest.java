@@ -63,4 +63,14 @@ public class NFASimulationTest {
         }
         assertTrue(rulesAsStrings.containsAll(Arrays.asList("[3, 2] ---a--> []", "[3, 2] ---b--> [2, 1, 3]")));
     }
+
+    @Test
+    public void test_discoverStatesAndRules() {
+        NFADesign nfaDesign = new NFADesign(STATE1, Arrays.asList(STATE3), NFA_RULEBOOK);
+        NFASimulation simulation = new NFASimulation(nfaDesign);
+
+
+        nfaDesign.toNFA().getCurrentStatesConsideringFreeMoves();
+        simulation.discoverStatesAndRules(nfaDesign.toNFA().getCurrentStatesConsideringFreeMoves());
+    }
 }

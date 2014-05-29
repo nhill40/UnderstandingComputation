@@ -3,7 +3,9 @@ package fa.nfa;
 import fa.FAMultiRule;
 import fa.State;
 
+import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 public class NFASimulation {
@@ -41,5 +43,17 @@ public class NFASimulation {
             results.add(new FAMultiRule(states, character, nextStates(states, character)));
         }
         return results;
+    }
+
+    // TODO:  see page 142 - implement "discoverStatesAndRules"
+    public void discoverStatesAndRules(Set<State> states) {
+        Set<FAMultiRule> rules = new HashSet<FAMultiRule>();
+        rules.addAll(rulesFor(states));
+        Set<State> moreStates = new HashSet<State>();
+        for (FAMultiRule rule : rules) {
+            moreStates.addAll(rule.follow());
+        }
+
+
     }
 }
