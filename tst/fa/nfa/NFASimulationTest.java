@@ -43,6 +43,14 @@ public class NFASimulationTest {
     }
 
     @Test
+    public void test_rulebookAlphabet() {
+        // Make sure our alphabet contains what we think it should
+        Set<Character> results = NFA_RULEBOOK.alphabet();
+        assertEquals(2, results.size());
+        assertTrue(results.containsAll(Arrays.asList('a', 'b')));
+    }
+
+    /*@Test
     public void test_rulesFor() {
         NFADesign nfaDesign = new NFADesign(STATE1, Arrays.asList(STATE3), NFA_RULEBOOK);
         NFASimulation simulation = new NFASimulation(nfaDesign);
@@ -69,8 +77,11 @@ public class NFASimulationTest {
         NFADesign nfaDesign = new NFADesign(STATE1, Arrays.asList(STATE3), NFA_RULEBOOK);
         NFASimulation simulation = new NFASimulation(nfaDesign);
 
+        // Just a baseline to establish where we are at to begin with - 2 possible current states
+        Set<State> startStates = nfaDesign.toNFA().getCurrentStatesConsideringFreeMoves();
+        assertEquals(2, startStates.size());
+        assertTrue(startStates.containsAll(Arrays.asList(STATE1, STATE2)));
 
-        nfaDesign.toNFA().getCurrentStatesConsideringFreeMoves();
-        simulation.discoverStatesAndRules(nfaDesign.toNFA().getCurrentStatesConsideringFreeMoves());
-    }
+        simulation.discoverStatesAndRules(startStates);
+    }*/
 }

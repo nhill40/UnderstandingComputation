@@ -3,10 +3,7 @@ package fa.nfa;
 import fa.FAMultiRule;
 import fa.State;
 
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class NFASimulation {
     private NFADesign nfaDesign;
@@ -36,17 +33,21 @@ public class NFASimulation {
      * @param states The current states to be used when building the Multi Rule.
      * @return A collection of Multi Rules covering every possible input character.
      */
-    public Set<FAMultiRule> rulesFor(Set<State> states) {
+    public Set<FAMultiRule> rulesFor(Set<Set<State>> states) {
         Set<FAMultiRule> results = new LinkedHashSet<FAMultiRule>();
 
         for (Character character : nfaDesign.getRulebook().alphabet()) {
-            results.add(new FAMultiRule(states, character, nextStates(states, character)));
+            //results.add(new FAMultiRule(states, character, nextStates(states, character)));
         }
         return results;
     }
 
     // TODO:  see page 142 - implement "discoverStatesAndRules"
-    public void discoverStatesAndRules(Set<State> states) {
+    public Map<Set<Set<State>>, List<FAMultiRule>> discoverStatesAndRules(Set<Set<State>> states) {
+        Map<Set<Set<State>>, List<FAMultiRule>> results = new HashMap<Set<Set<State>>, List<FAMultiRule>>();
+        Set<Set<State>> resultStates = new HashSet<Set<State>>();
+        List<FAMultiRule> resultRules = new ArrayList<FAMultiRule>();
+
         Set<FAMultiRule> rules = new HashSet<FAMultiRule>();
         rules.addAll(rulesFor(states));
         Set<State> moreStates = new HashSet<State>();
@@ -54,6 +55,18 @@ public class NFASimulation {
             moreStates.addAll(rule.follow());
         }
 
+        if (states.containsAll(moreStates)) {
+            //resultStates.add(states);
+            resultRules.addAll(rules);
+            results.put(resultStates, resultRules);
+            return results;
+        } else {
+            Set<State> yetEvenMoreStates = new HashSet<State>();
+            //yetEvenMoreStates.addAll(states);
+            yetEvenMoreStates.addAll(moreStates);
+           // results = discoverStatesAndRules(yetEvenMoreStates);
+        }
 
+        return results;
     }
 }

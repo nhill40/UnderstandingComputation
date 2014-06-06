@@ -1,6 +1,8 @@
 package fa.dfa;
 
 import fa.FASingleRule;
+import fa.MultiState;
+import fa.SingleState;
 import fa.State;
 import org.junit.Test;
 
@@ -52,10 +54,10 @@ public class DFATest {
      */
     @Test
     public void test_NFAtoDFAConversion_baseline() {
-        final State STATE_1_OR_2 = new State("1 or 2");
-        final State STATE_2_OR_3 = new State("2 or 3");
-        final State STATE_NONE = new State("None");
-        final State STATE_1_2_OR_3 = new State("1, 2, or 3");
+        final State STATE_1_OR_2 = new MultiState(1, 2);
+        final State STATE_2_OR_3 = new MultiState(2, 3);
+        final State STATE_NONE = new SingleState(null);
+        final State STATE_1_2_OR_3 = new MultiState(1, 2, 3);
 
         DFARulebook rulebook = new DFARulebook(Arrays.asList(
                 new FASingleRule(STATE_1_OR_2, 'a', STATE_1_OR_2), new FASingleRule(STATE_1_OR_2, 'b', STATE_2_OR_3),

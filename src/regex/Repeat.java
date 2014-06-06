@@ -1,6 +1,7 @@
 package regex;
 
 import fa.FASingleRule;
+import fa.SingleState;
 import fa.State;
 import fa.nfa.NFADesign;
 import fa.nfa.NFARulebook;
@@ -40,7 +41,7 @@ public class Repeat extends Pattern {
     public NFADesign toNFADesign() {
         NFADesign nfaDesign = pattern.toNFADesign();
 
-        State startState = new State("Start State");
+        State startState = new SingleState(1);
         List<State> acceptStates = new ArrayList<State>();
         acceptStates.addAll(nfaDesign.getAcceptStates());
         acceptStates.add(startState);
