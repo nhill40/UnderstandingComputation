@@ -1,6 +1,6 @@
 package fa.nfa;
 
-import fa.FASingleRule;
+import fa.FARule;
 
 import java.util.Arrays;
 
@@ -11,7 +11,7 @@ import static fa.FATestStates.STATE3;
 public class NFATestRules {
 
     public static final NFARulebook NFA_RULEBOOK = new NFARulebook(Arrays.asList(
-            new FASingleRule(STATE1, 'a', STATE1), new FASingleRule(STATE1, 'a', STATE2), new FASingleRule(STATE1, null, STATE2),
-            new FASingleRule(STATE2, 'b', STATE3),
-            new FASingleRule(STATE3, null, STATE2), new FASingleRule(STATE3, 'b', STATE1)));
+            new FARule(STATE1, 'a', STATE1), new FARule(STATE1, 'a', STATE2), new FARule(STATE1, null, STATE2),
+            new FARule(STATE2, 'b', STATE3),
+            new FARule(STATE3, null, STATE2), new FARule(STATE3, 'b', STATE1)));
 }

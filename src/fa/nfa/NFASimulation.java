@@ -1,6 +1,6 @@
 package fa.nfa;
 
-import fa.FAMultiRule;
+import fa.FARule;
 import fa.State;
 
 import java.util.*;
@@ -33,8 +33,8 @@ public class NFASimulation {
      * @param states The current states to be used when building the Multi Rule.
      * @return A collection of Multi Rules covering every possible input character.
      */
-    public Set<FAMultiRule> rulesFor(Set<Set<State>> states) {
-        Set<FAMultiRule> results = new LinkedHashSet<FAMultiRule>();
+    public Set<FARule> rulesFor(Set<Set<State>> states) {
+        Set<FARule> results = new LinkedHashSet<FARule>();
 
         for (Character character : nfaDesign.getRulebook().alphabet()) {
             //results.add(new FAMultiRule(states, character, nextStates(states, character)));
@@ -43,16 +43,16 @@ public class NFASimulation {
     }
 
     // TODO:  see page 142 - implement "discoverStatesAndRules"
-    public Map<Set<Set<State>>, List<FAMultiRule>> discoverStatesAndRules(Set<Set<State>> states) {
-        Map<Set<Set<State>>, List<FAMultiRule>> results = new HashMap<Set<Set<State>>, List<FAMultiRule>>();
+    public Map<Set<Set<State>>, List<FARule>> discoverStatesAndRules(Set<Set<State>> states) {
+        Map<Set<Set<State>>, List<FARule>> results = new HashMap<Set<Set<State>>, List<FARule>>();
         Set<Set<State>> resultStates = new HashSet<Set<State>>();
-        List<FAMultiRule> resultRules = new ArrayList<FAMultiRule>();
+        List<FARule> resultRules = new ArrayList<FARule>();
 
-        Set<FAMultiRule> rules = new HashSet<FAMultiRule>();
+        Set<FARule> rules = new HashSet<FARule>();
         rules.addAll(rulesFor(states));
         Set<State> moreStates = new HashSet<State>();
-        for (FAMultiRule rule : rules) {
-            moreStates.addAll(rule.follow());
+        for (FARule rule : rules) {
+            //moreStates.addAll(rule.follow());
         }
 
         if (states.containsAll(moreStates)) {

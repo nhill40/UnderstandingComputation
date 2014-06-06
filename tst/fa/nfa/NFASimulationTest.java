@@ -1,13 +1,10 @@
 package fa.nfa;
 
-import fa.FAMultiRule;
 import fa.State;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 import static fa.FATestStates.STATE1;
