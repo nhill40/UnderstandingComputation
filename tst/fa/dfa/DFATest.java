@@ -1,8 +1,6 @@
 package fa.dfa;
 
 import fa.FARule;
-import fa.MultiState;
-import fa.SingleState;
 import fa.State;
 import org.junit.Test;
 
@@ -54,10 +52,10 @@ public class DFATest {
      */
     @Test
     public void test_NFAtoDFAConversion_baseline() {
-        final State STATE_1_OR_2 = new MultiState(1, 2);
-        final State STATE_2_OR_3 = new MultiState(2, 3);
-        final State STATE_NONE = new SingleState(null);
-        final State STATE_1_2_OR_3 = new MultiState(1, 2, 3);
+        final State STATE_1_OR_2 = new State(1, 2);
+        final State STATE_2_OR_3 = new State(2, 3);
+        final State STATE_NONE = new State(null);
+        final State STATE_1_2_OR_3 = new State(1, 2, 3);
 
         DFARulebook rulebook = new DFARulebook(Arrays.asList(
                 new FARule(STATE_1_OR_2, 'a', STATE_1_OR_2), new FARule(STATE_1_OR_2, 'b', STATE_2_OR_3),

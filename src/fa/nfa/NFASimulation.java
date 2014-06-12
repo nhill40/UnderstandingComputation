@@ -19,10 +19,10 @@ public class NFASimulation {
      * @param character The input character to feed the NFA.
      * @return The possible current states taking free moves into consideration.
      */
-    public Set<State> nextStates(Set<State> states, Character character) {
+    public State nextState(Set<State> states, Character character) {
         NFA nfa = nfaDesign.toNFA(states);
         nfa.readCharacter(character);
-        return nfa.getCurrentStatesConsideringFreeMoves();
+        return State.buildState(nfa.getCurrentStatesConsideringFreeMoves());
     }
 
     /**
@@ -33,15 +33,17 @@ public class NFASimulation {
      * @param states The current states to be used when building the Multi Rule.
      * @return A collection of Multi Rules covering every possible input character.
      */
-    public Set<FARule> rulesFor(Set<Set<State>> states) {
+    public Set<FARule> rulesFor(Set<State> states) {
         Set<FARule> results = new LinkedHashSet<FARule>();
+        State state = State.buildState(states);
 
         for (Character character : nfaDesign.getRulebook().alphabet()) {
-            //results.add(new FAMultiRule(states, character, nextStates(states, character)));
+            results.add(new FARule(state, character, nextState(states, character)));
         }
         return results;
     }
 
+    /*
     // TODO:  see page 142 - implement "discoverStatesAndRules"
     public Map<Set<Set<State>>, List<FARule>> discoverStatesAndRules(Set<Set<State>> states) {
         Map<Set<Set<State>>, List<FARule>> results = new HashMap<Set<Set<State>>, List<FARule>>();
@@ -68,5 +70,5 @@ public class NFASimulation {
         }
 
         return results;
-    }
+    }*/
 }
