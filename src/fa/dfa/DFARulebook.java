@@ -1,7 +1,6 @@
 package fa.dfa;
 
 import fa.FARule;
-import fa.FASingleRule;
 import fa.State;
 
 import java.util.List;
@@ -13,9 +12,9 @@ import java.util.List;
  * (3) A call to "follow" on the looked up rule to get next state
  */
 public class DFARulebook {
-    private List<FASingleRule> rules;
+    private List<FARule> rules;
 
-    public DFARulebook(List<FASingleRule> rules) {
+    public DFARulebook(List<FARule> rules) {
         this.rules = rules;
     }
 
@@ -35,8 +34,8 @@ public class DFARulebook {
      * @param character the character to search the rules for.
      * @return the applicable rule.
      */
-    public FASingleRule ruleFor(State state, Character character) {
-        for (FASingleRule rule : rules) {
+    public FARule ruleFor(State state, Character character) {
+        for (FARule rule : rules) {
             if (rule.appliesTo(state, character)) {
                 return rule;
             }

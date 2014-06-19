@@ -1,11 +1,13 @@
 package fa.nfa;
 
-import fa.FAMultiRule;
-import fa.FARule;
-import fa.FASingleRule;
 import fa.State;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class NFASimulation {
     private NFADesign nfaDesign;
@@ -74,5 +76,47 @@ public class NFASimulation {
             return false;
         }
         return true;
+    }
+
+    protected static class FAMultiRule {
+        private Set<State> states;
+        private Character character;
+        private Set<State> nextStates;
+
+        public FAMultiRule(Set<State> states, Character character, Set<State> nextStates) {
+            this.states = states;
+            this.character = character;
+            this.nextStates = nextStates;
+        }
+
+        /**
+         * Determines if this particular rule applies to the given state/character.
+         * @param state the state to check for.
+         * @param character the character to check for.
+         * @return whether this rule applies to the given state/character.
+         */
+        public boolean appliesTo(State state, Character character) {
+            // TODO: provide real implementation
+            //return this.state.equals(state) && ((getCharacter() == null && character == null) || (getCharacter() == character));
+            return true;
+        }
+
+        /**
+         * @return the nextState.
+         */
+        public Set<State> follow() {
+            return nextStates;
+        }
+
+        @Override
+        public String toString() {
+            // This is intended as a testing/debugging convenience
+            StringBuilder sb = new StringBuilder();
+            // TODO: need to validate what this looks like printed
+            sb.append(states);
+            sb.append(" ---").append(character).append("--> ");
+            sb.append(nextStates);
+            return sb.toString();
+        }
     }
 }

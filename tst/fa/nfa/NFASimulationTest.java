@@ -1,11 +1,14 @@
 package fa.nfa;
 
-import fa.FAMultiRule;
-import fa.FARule;
 import fa.State;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 import static fa.FATestStates.STATE1;
 import static fa.FATestStates.STATE2;
@@ -53,10 +56,10 @@ public class NFASimulationTest {
         NFADesign nfaDesign = new NFADesign(STATE1, Arrays.asList(STATE3), NFA_RULEBOOK);
         NFASimulation simulation = new NFASimulation(nfaDesign);
 
-        List<FAMultiRule> rules = simulation.rulesFor(new LinkedHashSet<>(Arrays.asList(STATE1, STATE2)));
+        List<NFASimulation.FAMultiRule> rules = simulation.rulesFor(new LinkedHashSet<>(Arrays.asList(STATE1, STATE2)));
         assertEquals(2, rules.size());
         List<String> rulesAsStrings = new ArrayList<>();
-        for (FARule rule : rules) {
+        for (NFASimulation.FAMultiRule rule : rules) {
             rulesAsStrings.add(rule.toString());
         }
         assertTrue(rulesAsStrings.containsAll(Arrays.asList("[[1], [2]] ---a--> [[1], [2]]", "[[1], [2]] ---b--> [[2], [3]]")));
@@ -64,7 +67,7 @@ public class NFASimulationTest {
         rules = simulation.rulesFor(new LinkedHashSet<>(Arrays.asList(STATE3, STATE2)));
         assertEquals(2, rules.size());
         rulesAsStrings = new ArrayList<>();
-        for (FARule rule : rules) {
+        for (NFASimulation.FAMultiRule rule : rules) {
             rulesAsStrings.add(rule.toString());
         }
         // TODO: getting the right answer, but sorting is an issue here

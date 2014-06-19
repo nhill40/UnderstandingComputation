@@ -1,7 +1,6 @@
 package fa.nfa;
 
 import fa.FARule;
-import fa.FASingleRule;
 import fa.State;
 
 import java.util.LinkedHashSet;
@@ -9,9 +8,9 @@ import java.util.List;
 import java.util.Set;
 
 public class NFARulebook {
-    private List<FASingleRule> rules;
+    private List<FARule> rules;
 
-    public NFARulebook(List<FASingleRule> rules) {
+    public NFARulebook(List<FARule> rules) {
         this.rules = rules;
     }
 
@@ -62,7 +61,7 @@ public class NFARulebook {
     public Set<State> followRulesFor(State state, Character character) {
         Set<State> possibleStates = new LinkedHashSet<>();
 
-        for (FASingleRule rule : rulesFor(state, character)) {
+        for (FARule rule : rulesFor(state, character)) {
             possibleStates.add(rule.follow());
         }
 
@@ -75,9 +74,9 @@ public class NFARulebook {
      * @param character the character to search the rules for.
      * @return the applicable rule.
      */
-    public Set<FASingleRule> rulesFor(State state, Character character) {
-        Set<FASingleRule> applicableRules = new LinkedHashSet<>();
-        for (FASingleRule rule : rules) {
+    public Set<FARule> rulesFor(State state, Character character) {
+        Set<FARule> applicableRules = new LinkedHashSet<>();
+        for (FARule rule : rules) {
             if (rule.appliesTo(state, character)) {
                 applicableRules.add(rule);
             }
@@ -86,7 +85,7 @@ public class NFARulebook {
         return applicableRules;
     }
 
-    public List<FASingleRule> getRules() {
+    public List<FARule> getRules() {
         return rules;
     }
 
