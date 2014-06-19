@@ -4,33 +4,8 @@ package fa;
  * Superclass for all rule subtypes.  A rule is simply a combination of current state(s), an input character (for
  * lookup purposes) and nextState(s) (what state(s) to move to next).
  */
-public class FARule {
-    private State state;
+public abstract class FARule {
     private Character character;
-    private State nextState;
-
-    public FARule(State state, Character character, State nextState) {
-        this.state = state;
-        this.character = character;
-        this.nextState = nextState;
-    }
-
-    /**
-     * Determines if this particular rule applies to the given state/character.
-     * @param state the state to check for.
-     * @param character the character to check for.
-     * @return whether this rule applies to the given state/character.
-     */
-    public boolean appliesTo(State state, Character character) {
-        return this.state.equals(state) && ((getCharacter() == null && character == null) || (getCharacter() == character));
-    }
-
-    /**
-     * @return the nextState.
-     */
-    public State follow() {
-        return nextState;
-    }
 
     public FARule(Character character) {
         this.character = character;
@@ -38,15 +13,5 @@ public class FARule {
 
     public Character getCharacter() {
         return character;
-    }
-
-    @Override
-    public String toString() {
-        // This is intended as a testing/debugging convenience
-        StringBuilder sb = new StringBuilder();
-        sb.append(state);
-        sb.append(" ---").append(getCharacter()).append("--> ");
-        sb.append(nextState);
-        return sb.toString();
     }
 }

@@ -1,6 +1,7 @@
 package regex;
 
 import fa.FARule;
+import fa.FASingleRule;
 import fa.State;
 import fa.nfa.NFADesign;
 import fa.nfa.NFARulebook;
@@ -23,7 +24,7 @@ public class Concatenate extends Pattern {
     private List<Pattern> patterns;
 
     public Concatenate(Pattern first, Pattern second) {
-        patterns = new LinkedList<Pattern>();
+        patterns = new LinkedList<>();
         patterns.add(first);
         patterns.add(second);
     }
@@ -51,12 +52,12 @@ public class Concatenate extends Pattern {
         State startState = firstNFADesign.getStartState();
         List<State> acceptStates = secondNFADesign.getAcceptStates();
 
-        List<FARule> rules = new ArrayList<FARule>();
+        List<FASingleRule> rules = new ArrayList<>();
         rules.addAll(firstNFADesign.getRulebook().getRules());
         rules.addAll(secondNFADesign.getRulebook().getRules());
 
         for (State state : firstNFADesign.getAcceptStates()) {
-            rules.add(new FARule(state, null, secondNFADesign.getStartState()));
+            rules.add(new FASingleRule(state, null, secondNFADesign.getStartState()));
         }
 
         NFARulebook rulebook = new NFARulebook(rules);

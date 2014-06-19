@@ -1,6 +1,6 @@
 package regex;
 
-import fa.FARule;
+import fa.FASingleRule;
 import fa.State;
 import fa.nfa.NFADesign;
 import fa.nfa.NFARulebook;
@@ -19,7 +19,7 @@ public class Choose extends Pattern {
     private List<Pattern> patterns;
 
     public Choose(Pattern first, Pattern second) {
-        patterns = new LinkedList<Pattern>();
+        patterns = new LinkedList<>();
         patterns.add(first);
         patterns.add(second);
     }
@@ -46,16 +46,16 @@ public class Choose extends Pattern {
         NFADesign secondNFADesign = patterns.get(1).toNFADesign();
 
         State startState = new State(1);
-        List<State> acceptStates = new ArrayList<State>();
+        List<State> acceptStates = new ArrayList<>();
         acceptStates.addAll(firstNFADesign.getAcceptStates());
         acceptStates.addAll(secondNFADesign.getAcceptStates());
 
-        List<FARule> rules = new ArrayList<FARule>();
+        List<FASingleRule> rules = new ArrayList<>();
         rules.addAll(firstNFADesign.getRulebook().getRules());
         rules.addAll(secondNFADesign.getRulebook().getRules());
 
-        rules.add(new FARule(startState, null, firstNFADesign.getStartState()));
-        rules.add(new FARule(startState, null, secondNFADesign.getStartState()));
+        rules.add(new FASingleRule(startState, null, firstNFADesign.getStartState()));
+        rules.add(new FASingleRule(startState, null, secondNFADesign.getStartState()));
 
         NFARulebook rulebook = new NFARulebook(rules);
 

@@ -12,7 +12,7 @@ public class StateTest {
 
     @Test
     public void test_buildState() {
-        Set<State> inputStates = new HashSet<State>();
+        Set<State> inputStates = new HashSet<>();
         inputStates.add(new State(1));
         inputStates.add(new State(2));
         State result = State.buildState(inputStates);

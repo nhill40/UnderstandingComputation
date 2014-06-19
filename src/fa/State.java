@@ -10,7 +10,7 @@ import java.util.TreeSet;
  * be considered equivalent.
  */
 public class State {
-    private final Set<Integer> identifiers = new TreeSet<Integer>();
+    private final Set<Integer> identifiers = new TreeSet<>();
 
     public State(Integer... identifiers) {
         if (identifiers != null)
@@ -27,7 +27,7 @@ public class State {
     }
 
     public static State buildState(Set<State> states) {
-        Set<Integer> identifiers = new TreeSet<Integer>();
+        Set<Integer> identifiers = new TreeSet<>();
         for (State state : states) {
             identifiers.addAll(state.getIdentifiers());
         }

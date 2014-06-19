@@ -1,6 +1,8 @@
 package fa.nfa;
 
+import fa.FAMultiRule;
 import fa.FARule;
+import fa.FASingleRule;
 import fa.State;
 
 import java.util.*;
@@ -19,10 +21,10 @@ public class NFASimulation {
      * @param character The input character to feed the NFA.
      * @return The possible current states taking free moves into consideration.
      */
-    public State nextState(Set<State> states, Character character) {
+    public Set<State> nextState(Set<State> states, Character character) {
         NFA nfa = nfaDesign.toNFA(states);
         nfa.readCharacter(character);
-        return State.buildState(nfa.getCurrentStatesConsideringFreeMoves());
+        return nfa.getCurrentStatesConsideringFreeMoves();
     }
 
     /**
@@ -33,42 +35,44 @@ public class NFASimulation {
      * @param states The current states to be used when building the Multi Rule.
      * @return A collection of Multi Rules covering every possible input character.
      */
-    public Set<FARule> rulesFor(Set<State> states) {
-        Set<FARule> results = new LinkedHashSet<FARule>();
-        State state = State.buildState(states);
-
+    public List<FAMultiRule> rulesFor(Set<State> states) {
+        List<FAMultiRule> results = new ArrayList<>();
         for (Character character : nfaDesign.getRulebook().alphabet()) {
-            results.add(new FARule(state, character, nextState(states, character)));
+            results.add(new FAMultiRule(states, character, nextState(states, character)));
         }
         return results;
     }
 
-    /*
-    // TODO:  see page 142 - implement "discoverStatesAndRules"
-    public Map<Set<Set<State>>, List<FARule>> discoverStatesAndRules(Set<Set<State>> states) {
-        Map<Set<Set<State>>, List<FARule>> results = new HashMap<Set<Set<State>>, List<FARule>>();
-        Set<Set<State>> resultStates = new HashSet<Set<State>>();
-        List<FARule> resultRules = new ArrayList<FARule>();
+    // TODO: these data structures are out of control - I think we need a "MultiState" data structure to represent sets-of-states
+    public Map<Set<Set<State>>, List<FAMultiRule>> discoverStatesAndRules(Set<Set<State>> states) {
 
-        Set<FARule> rules = new HashSet<FARule>();
-        rules.addAll(rulesFor(states));
-        Set<State> moreStates = new HashSet<State>();
-        for (FARule rule : rules) {
-            //moreStates.addAll(rule.follow());
+        List<FAMultiRule> rules = new ArrayList<>();
+        for (Set<State> stateSet : states) {
+            rules.addAll(rulesFor(stateSet));
         }
 
-        if (states.containsAll(moreStates)) {
-            //resultStates.add(states);
-            resultRules.addAll(rules);
-            results.put(resultStates, resultRules);
+        Set<Set<State>> moreStates = new HashSet<>();
+        for (FAMultiRule rule : rules) {
+            moreStates.add(rule.follow());
+        }
+
+        if (isSubset(states, moreStates)) {
+            Map<Set<Set<State>>, List<FAMultiRule>> results = new HashMap<>();
+            results.put(states, rules);
             return results;
         } else {
-            Set<State> yetEvenMoreStates = new HashSet<State>();
-            //yetEvenMoreStates.addAll(states);
-            yetEvenMoreStates.addAll(moreStates);
-           // results = discoverStatesAndRules(yetEvenMoreStates);
+            states.addAll(moreStates);
+            return discoverStatesAndRules(states);
         }
+    }
 
-        return results;
-    }*/
+    // TODO: this method is imprecise - only doing a quick sanity check to compare sizes, but needs to deep dive to determine if truly a superset/subset situation
+    // TODO: probably belongs on the "MultiState" class if/when we have one
+    public static boolean isSubset(Set<Set<State>> potentialSuperset, Set<Set<State>> potentialSubset) {
+        // We know "false" right off the bat if the superset is < than the subset.
+        if (potentialSuperset.size() < potentialSubset.size()) {
+            return false;
+        }
+        return true;
+    }
 }

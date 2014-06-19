@@ -32,7 +32,7 @@ public class NFADesign {
      * @return the NFA.
      */
     public NFA toNFA() {
-        Set<State> currentStates = new LinkedHashSet<State>();
+        Set<State> currentStates = new LinkedHashSet<>();
         currentStates.add(startState);
         return new NFA(currentStates, acceptStates, rulebook);
     }
@@ -50,7 +50,7 @@ public class NFADesign {
      * @return the NFA.
      */
     public NFA toNFA(State currentState) {
-        return new NFA(new LinkedHashSet<State>(Arrays.asList(currentState)), acceptStates, rulebook);
+        return new NFA(new LinkedHashSet<>(Arrays.asList(currentState)), acceptStates, rulebook);
     }
 
     /**
