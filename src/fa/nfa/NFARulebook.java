@@ -3,7 +3,7 @@ package fa.nfa;
 import fa.FARule;
 import fa.State;
 
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -27,7 +27,7 @@ public class NFARulebook {
             return states;
         }
 
-        Set<State> combinedStates = new LinkedHashSet<>();
+        Set<State> combinedStates = new HashSet<>();
         combinedStates.addAll(moreStates);
         combinedStates.addAll(states);
         states = followFreeMoves(combinedStates);
@@ -42,7 +42,7 @@ public class NFARulebook {
      * @return the next possible states.
      */
     public Set<State> nextStates(Set<State> states, Character character) {
-        Set<State> possibleStates = new LinkedHashSet<>();
+        Set<State> possibleStates = new HashSet<>();
 
         for (State state : states) {
             possibleStates.addAll(followRulesFor(state, character));
@@ -59,7 +59,7 @@ public class NFARulebook {
      * @return
      */
     public Set<State> followRulesFor(State state, Character character) {
-        Set<State> possibleStates = new LinkedHashSet<>();
+        Set<State> possibleStates = new HashSet<>();
 
         for (FARule rule : rulesFor(state, character)) {
             possibleStates.add(rule.follow());
@@ -75,7 +75,7 @@ public class NFARulebook {
      * @return the applicable rule.
      */
     public Set<FARule> rulesFor(State state, Character character) {
-        Set<FARule> applicableRules = new LinkedHashSet<>();
+        Set<FARule> applicableRules = new HashSet<>();
         for (FARule rule : rules) {
             if (rule.appliesTo(state, character)) {
                 applicableRules.add(rule);
@@ -94,7 +94,7 @@ public class NFARulebook {
      * @return A list representing all possible/valid input characters for this rulebook.
      */
     public Set<Character> alphabet() {
-        Set<Character> results = new LinkedHashSet<>();
+        Set<Character> results = new HashSet<>();
         for (FARule rule : rules) {
             if (rule.getCharacter() != null) results.add(rule.getCharacter());
         }

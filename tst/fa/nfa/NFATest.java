@@ -5,7 +5,7 @@ import fa.State;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.Set;
 
 import static fa.FATestStates.STATE1;
@@ -32,24 +32,24 @@ public class NFATest {
 
         // Given some current states & an input, our DFA rulebook can definitively tell you what states to move to next:
         Set<State> possibleNextStates;
-        possibleNextStates = rulebook.nextStates(new LinkedHashSet<>(Arrays.asList(STATE1)), 'b');
+        possibleNextStates = rulebook.nextStates(new HashSet<>(Arrays.asList(STATE1)), 'b');
         assertEquals(2, possibleNextStates.size());
         assertTrue(possibleNextStates.containsAll(Arrays.asList(STATE1, STATE2)));
 
-        possibleNextStates = rulebook.nextStates(new LinkedHashSet<>(Arrays.asList(STATE1, STATE2)), 'a');
+        possibleNextStates = rulebook.nextStates(new HashSet<>(Arrays.asList(STATE1, STATE2)), 'a');
         assertEquals(2, possibleNextStates.size());
         assertTrue(possibleNextStates.containsAll(Arrays.asList(STATE1, STATE3)));
 
-        possibleNextStates = rulebook.nextStates(new LinkedHashSet<>(Arrays.asList(STATE1, STATE3)), 'b');
+        possibleNextStates = rulebook.nextStates(new HashSet<>(Arrays.asList(STATE1, STATE3)), 'b');
         assertEquals(3, possibleNextStates.size());
         assertTrue(possibleNextStates.containsAll(Arrays.asList(STATE1, STATE2, STATE4)));
 
         // Given some current states and a list of accept states, the NFA can tell us if we are in an accept state:
-        assertFalse(new NFA(new LinkedHashSet<>(Arrays.asList(STATE1)), Arrays.asList(STATE4), rulebook).accepting());
-        assertTrue(new NFA(new LinkedHashSet<>(Arrays.asList(STATE1, STATE2, STATE4)), Arrays.asList(STATE4), rulebook).accepting());
+        assertFalse(new NFA(new HashSet<>(Arrays.asList(STATE1)), Arrays.asList(STATE4), rulebook).accepting());
+        assertTrue(new NFA(new HashSet<>(Arrays.asList(STATE1, STATE2, STATE4)), Arrays.asList(STATE4), rulebook).accepting());
 
         // The NFA maintains current possible states and can be fed input one character at time to mutate those states.
-        NFA nfa = new NFA(new LinkedHashSet<>(Arrays.asList(STATE1)), Arrays.asList(STATE4), rulebook);
+        NFA nfa = new NFA(new HashSet<>(Arrays.asList(STATE1)), Arrays.asList(STATE4), rulebook);
         assertFalse(nfa.accepting());
         nfa.readCharacter('b');
         assertFalse(nfa.accepting());
@@ -59,7 +59,7 @@ public class NFATest {
         assertTrue(nfa.accepting());
 
         // For convenience, we can also pass a sting - which will be broken into a char array under the covers.
-        nfa = new NFA(new LinkedHashSet<>(Arrays.asList(STATE1)), Arrays.asList(STATE4), rulebook);
+        nfa = new NFA(new HashSet<>(Arrays.asList(STATE1)), Arrays.asList(STATE4), rulebook);
         assertFalse(nfa.accepting());
         nfa.readString("bbbbb");
         assertTrue(nfa.accepting());
@@ -84,11 +84,11 @@ public class NFATest {
                 new FARule(STATE6, 'a', STATE4)));
 
         Set<State> possibleNextStates;
-        possibleNextStates = rulebook.nextStates(new LinkedHashSet<>(Arrays.asList(STATE1)), null);
+        possibleNextStates = rulebook.nextStates(new HashSet<>(Arrays.asList(STATE1)), null);
         assertEquals(2, possibleNextStates.size());
         assertTrue(possibleNextStates.containsAll(Arrays.asList(STATE2, STATE4)));
 
-        possibleNextStates = rulebook.followFreeMoves(new LinkedHashSet<>(Arrays.asList(STATE1)));
+        possibleNextStates = rulebook.followFreeMoves(new HashSet<>(Arrays.asList(STATE1)));
         assertEquals(3, possibleNextStates.size());
         assertTrue(possibleNextStates.containsAll(Arrays.asList(STATE1, STATE2, STATE4)));
 
@@ -133,7 +133,7 @@ public class NFATest {
         assertEquals(2, currentStatesConsideringFreeMoves.size());
         assertTrue(currentStatesConsideringFreeMoves.containsAll(Arrays.asList(STATE2, STATE3)));
 
-        NFA nfa = nfaDesign.toNFA(new LinkedHashSet<>(Arrays.asList(STATE2, STATE3)));
+        NFA nfa = nfaDesign.toNFA(new HashSet<>(Arrays.asList(STATE2, STATE3)));
         nfa.readCharacter('b');
         currentStatesConsideringFreeMoves = nfa.getCurrentStatesConsideringFreeMoves();
         assertEquals(3, currentStatesConsideringFreeMoves.size());

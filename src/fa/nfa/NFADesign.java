@@ -3,7 +3,7 @@ package fa.nfa;
 import fa.State;
 
 import java.util.Arrays;
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -32,7 +32,7 @@ public class NFADesign {
      * @return the NFA.
      */
     public NFA toNFA() {
-        Set<State> currentStates = new LinkedHashSet<>();
+        Set<State> currentStates = new HashSet<>();
         currentStates.add(startState);
         return new NFA(currentStates, acceptStates, rulebook);
     }
@@ -50,8 +50,7 @@ public class NFADesign {
      * @return the NFA.
      */
     public NFA toNFA(State currentState) {
-        // TODO: evaluate if we really need LinkedHashSet (i.e. do we ever care about insertion order?!?)
-        return new NFA(new LinkedHashSet<>(Arrays.asList(currentState)), acceptStates, rulebook);
+        return new NFA(new HashSet<>(Arrays.asList(currentState)), acceptStates, rulebook);
     }
 
     /**
