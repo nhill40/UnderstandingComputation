@@ -16,7 +16,6 @@ import static fa.FATestStates.STATE3;
 import static fa.nfa.NFATestRules.NFA_RULEBOOK;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class NFASimulationTest {
@@ -87,8 +86,8 @@ public class NFASimulationTest {
        NFASimulation.StatesAndRules result =
                 simulation.discoverStatesAndRules(new HashSet<>(Arrays.asList(startStates)));
 
-        // TODO: write some proper asserts here
-        assertNotNull(result);
+        assertEquals(4, result.getStates().size());
+        assertEquals(8, result.getRules().size());
     }
 
     @Test

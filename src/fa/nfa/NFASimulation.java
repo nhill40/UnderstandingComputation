@@ -126,23 +126,21 @@ public class NFASimulation {
             this.rules = rules;
         }
 
-        private Set<Set<State>> getStates() {
+        public Set<Set<State>> getStates() {
             return states;
         }
 
-        private void setStates(Set<Set<State>> states) {
+        public void setStates(Set<Set<State>> states) {
             this.states = states;
         }
 
-        private List<FAMultiRule> getRules() {
+        public List<FAMultiRule> getRules() {
             return rules;
         }
 
-        private void setRules(List<FAMultiRule> rules) {
+        public void setRules(List<FAMultiRule> rules) {
             this.rules = rules;
         }
-
-
 
         public FARule toSingleRule(FAMultiRule multiRule) {
             State state = State.buildState(multiRule.states);
