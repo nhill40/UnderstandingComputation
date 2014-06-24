@@ -17,6 +17,11 @@ public class State {
             this.identifiers.addAll(Arrays.asList(identifiers));
     }
 
+    public State(Set<Integer> identifiers) {
+        if (identifiers !=null)
+            this.identifiers.addAll(identifiers);
+    }
+
     @Override
     public String toString() {
         return identifiers.toString();
@@ -24,6 +29,11 @@ public class State {
 
     public Set<Integer> getIdentifiers() {
         return identifiers;
+    }
+
+    public boolean isEquivalentTo(State otherState) {
+        return this.getIdentifiers().size() == otherState.getIdentifiers().size()
+                && this.getIdentifiers().containsAll(otherState.getIdentifiers());
     }
 
     public static State buildState(Set<State> states) {
@@ -35,5 +45,30 @@ public class State {
         return new State(identifiers.toArray(new Integer[identifiers.size()]));
     }
 
-    // TODO: implement equals/hashcode (?)
+    public static boolean isSubset(Set<Set<State>> potentialSuperset, Set<Set<State>> potentialSubset) {
+        // Save some machine cycles - we know "false" right off the bat if the superset is < than the subset.
+        if (potentialSuperset.size() < potentialSubset.size()) {
+            return false;
+        }
+
+        Set<Integer> supersetIdentifiers = new TreeSet<>();
+        for (Set<State> states : potentialSuperset) {
+            supersetIdentifiers.addAll(getIdentifiers(states));
+        }
+
+        Set<Integer> subsetIdentifiers = new TreeSet<>();
+        for (Set<State> states : potentialSubset) {
+            subsetIdentifiers.addAll(getIdentifiers(states));
+        }
+
+        return supersetIdentifiers.containsAll(subsetIdentifiers);
+    }
+
+    public static Set<Integer> getIdentifiers(Set<State> states) {
+        Set<Integer> identifiers = new TreeSet<>();
+        for (State state : states) {
+            identifiers.addAll(state.getIdentifiers());
+        }
+        return identifiers;
+    }
 }

@@ -1,12 +1,14 @@
 package fa.nfa;
 
+import fa.FARule;
 import fa.State;
+import fa.dfa.DFADesign;
+import fa.dfa.DFARulebook;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public class NFASimulation {
@@ -45,12 +47,11 @@ public class NFASimulation {
         return results;
     }
 
-    // TODO: these data structures are out of control - I think we need a "MultiState" data structure to represent sets-of-states
-    public Map<Set<Set<State>>, List<FAMultiRule>> discoverStatesAndRules(Set<Set<State>> states) {
+    public StatesAndRules discoverStatesAndRules(Set<Set<State>> states) {
 
         List<FAMultiRule> rules = new ArrayList<>();
-        for (Set<State> stateSet : states) {
-            rules.addAll(rulesFor(stateSet));
+        for (Set<State> multiState : states) {
+            rules.addAll(rulesFor(multiState));
         }
 
         Set<Set<State>> moreStates = new HashSet<>();
@@ -58,24 +59,20 @@ public class NFASimulation {
             moreStates.add(rule.follow());
         }
 
-        if (isSubset(states, moreStates)) {
-            Map<Set<Set<State>>, List<FAMultiRule>> results = new HashMap<>();
-            results.put(states, rules);
-            return results;
+        if (State.isSubset(states, moreStates)) {
+            return new StatesAndRules(states, rules);
         } else {
             states.addAll(moreStates);
             return discoverStatesAndRules(states);
         }
     }
 
-    // TODO: this method is imprecise - only doing a quick sanity check to compare sizes, but needs to deep dive to determine if truly a superset/subset situation
-    // TODO: probably belongs on the "MultiState" class if/when we have one
-    public static boolean isSubset(Set<Set<State>> potentialSuperset, Set<Set<State>> potentialSubset) {
-        // We know "false" right off the bat if the superset is < than the subset.
-        if (potentialSuperset.size() < potentialSubset.size()) {
-            return false;
-        }
-        return true;
+    public DFADesign toDFADesign() {
+        Set<State> startStates = nfaDesign.toNFA().getCurrentStatesConsideringFreeMoves();
+        StatesAndRules statesAndRules =
+                discoverStatesAndRules(new HashSet<>(Arrays.asList(startStates)));
+
+        return statesAndRules.toDFADesign(startStates, nfaDesign);
     }
 
     protected static class FAMultiRule {
@@ -90,18 +87,6 @@ public class NFASimulation {
         }
 
         /**
-         * Determines if this particular rule applies to the given state/character.
-         * @param state the state to check for.
-         * @param character the character to check for.
-         * @return whether this rule applies to the given state/character.
-         */
-        public boolean appliesTo(State state, Character character) {
-            // TODO: provide real implementation
-            //return this.state.equals(state) && ((getCharacter() == null && character == null) || (getCharacter() == character));
-            return true;
-        }
-
-        /**
          * @return the nextState.
          */
         public Set<State> follow() {
@@ -112,11 +97,126 @@ public class NFASimulation {
         public String toString() {
             // This is intended as a testing/debugging convenience
             StringBuilder sb = new StringBuilder();
-            // TODO: need to validate what this looks like printed
-            sb.append(states);
+            sb.append(statesToString(states));
             sb.append(" ---").append(character).append("--> ");
-            sb.append(nextStates);
+            sb.append(statesToString(nextStates));
             return sb.toString();
+        }
+
+        public static String statesToString(Set<State> states) {
+            StringBuilder sb = new StringBuilder();
+            sb.append('[');
+            String prefix = "";
+            for (Integer identifier : State.getIdentifiers(states)) {
+                sb.append(prefix).append(identifier);
+                prefix = ", ";
+            }
+            sb.append(']');
+            return sb.toString();
+        }
+    }
+
+    protected static class StatesAndRules {
+        private Set<Set<State>> states;
+        private List<FAMultiRule> rules;
+        private Set<State> singleStates = new HashSet<>();
+
+        private StatesAndRules(Set<Set<State>> states, List<FAMultiRule> rules) {
+            this.states = states;
+            this.rules = rules;
+        }
+
+        private Set<Set<State>> getStates() {
+            return states;
+        }
+
+        private void setStates(Set<Set<State>> states) {
+            this.states = states;
+        }
+
+        private List<FAMultiRule> getRules() {
+            return rules;
+        }
+
+        private void setRules(List<FAMultiRule> rules) {
+            this.rules = rules;
+        }
+
+
+
+        public FARule toSingleRule(FAMultiRule multiRule) {
+            State state = State.buildState(multiRule.states);
+            if (contains(singleStates, state)) {
+                for (State singleState : singleStates) {
+                    if (singleState.isEquivalentTo(state)) {
+                        state = singleState;
+                        break;
+                    }
+                }
+            } else {
+                singleStates.add(state);
+            }
+
+            State nextState = State.buildState(multiRule.nextStates);
+            if (contains(singleStates, nextState)) {
+                for (State singleState : singleStates) {
+                    if (singleState.isEquivalentTo(nextState)) {
+                        nextState = singleState;
+                        break;
+                    }
+                }
+            } else {
+                singleStates.add(nextState);
+            }
+
+            return new FARule(state, multiRule.character, nextState);
+        }
+
+        private List<FARule> getRulesAsSingleRules() {
+            List<FARule> result = new ArrayList<>();
+            for (FAMultiRule multiRule : rules) {
+                result.add(toSingleRule(multiRule));
+            }
+            return result;
+        }
+
+        private DFADesign toDFADesign(Set<State> startStates, NFADesign nfaDesign) {
+
+            List<FARule> singleRules = getRulesAsSingleRules();
+            for (FARule singleRule : singleRules) {
+                if (!contains(singleStates, singleRule.getState())) singleStates.add(singleRule.getState());
+                if (!contains(singleStates, singleRule.getNextState())) singleStates.add(singleRule.getNextState());
+            }
+
+            State startState = State.buildState(startStates);
+            for (State singleState : singleStates) {
+                if (singleState.isEquivalentTo(startState)) {
+                    startState = singleState;
+                    break;
+                }
+            }
+
+            List<State> acceptStates = new ArrayList<>();
+            for (Set<State> state : states) {
+                if (nfaDesign.toNFA(state).accepting()) {
+                    State acceptState = State.buildState(state);
+                    for (State singleState : singleStates) {
+                        if (singleState.isEquivalentTo(acceptState)) {
+                            acceptStates.add(singleState);
+                            break;
+                        }
+                    }
+                }
+            }
+            return new DFADesign(startState, acceptStates,
+                    new DFARulebook(singleRules));
+        }
+
+        private static boolean contains(Set<State> singleStates, State singleState) {
+            for (State state : singleStates) {
+                if (state.isEquivalentTo(singleState)) return true;
+            }
+            return false;
         }
     }
 }

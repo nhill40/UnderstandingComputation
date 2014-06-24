@@ -19,6 +19,14 @@ public class FARule {
         return character;
     }
 
+    public State getState() {
+        return state;
+    }
+
+    public State getNextState() {
+        return nextState;
+    }
+
     /**
      * Determines if this particular rule applies to the given state/character.
      * @param state the state to check for.

@@ -50,6 +50,7 @@ public class NFADesign {
      * @return the NFA.
      */
     public NFA toNFA(State currentState) {
+        // TODO: evaluate if we really need LinkedHashSet (i.e. do we ever care about insertion order?!?)
         return new NFA(new LinkedHashSet<>(Arrays.asList(currentState)), acceptStates, rulebook);
     }
 
