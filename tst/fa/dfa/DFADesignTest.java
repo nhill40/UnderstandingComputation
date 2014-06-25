@@ -22,7 +22,7 @@ public class DFADesignTest {
     }
 
     /**
-     * Equivalent to same-named test found in NFATest.
+     * Equivalent to same-named test found in NFADesignTest.
      */
     @Test
     public void test_NFAtoDFAConversion_baseline() {
