@@ -13,12 +13,15 @@ public class State {
     private final Set<Integer> identifiers = new TreeSet<>();
 
     public State(Integer... identifiers) {
-        if (identifiers != null)
-            this.identifiers.addAll(Arrays.asList(identifiers));
+        if (identifiers != null) {
+            for (Integer identifier : Arrays.asList(identifiers)) {
+                if (identifier != null) this.identifiers.add(identifier);
+            }
+        }
     }
 
     public State(Set<Integer> identifiers) {
-        if (identifiers !=null)
+        if (identifiers != null)
             this.identifiers.addAll(identifiers);
     }
 
