@@ -1,7 +1,8 @@
-package fa.nfa;
+package fa.nfa.simulation;
 
 import fa.State;
 import fa.dfa.DFADesign;
+import fa.nfa.NFADesign;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -13,8 +14,6 @@ import java.util.Set;
 import static fa.FATestStates.STATE1;
 import static fa.FATestStates.STATE2;
 import static fa.FATestStates.STATE3;
-import static fa.FATestStates.STATE4;
-import static fa.FATestStates.STATE5;
 import static fa.nfa.NFATestRules.NFA_RULEBOOK;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -27,20 +26,20 @@ public class NFASimulationTest {
         NFADesign nfaDesign = new NFADesign(STATE1, Arrays.asList(STATE3), NFA_RULEBOOK);
         NFASimulation simulation = new NFASimulation(nfaDesign);
 
-        NFASimulation.MultiState currentStates;
-        currentStates = simulation.nextState(new NFASimulation.MultiState(STATE1, STATE2), 'a');
+        MultiState currentStates;
+        currentStates = simulation.nextState(new MultiState(STATE1, STATE2), 'a');
         assertEquals(2, currentStates.getStates().size());
         assertTrue(currentStates.getStates().containsAll(Arrays.asList(STATE1, STATE2)));
 
-        currentStates = simulation.nextState(new NFASimulation.MultiState(STATE1, STATE2), 'b');
+        currentStates = simulation.nextState(new MultiState(STATE1, STATE2), 'b');
         assertEquals(2, currentStates.getStates().size());
         assertTrue(currentStates.getStates().containsAll(Arrays.asList(STATE2, STATE3)));
 
-        currentStates = simulation.nextState(new NFASimulation.MultiState(STATE2, STATE3), 'b');
+        currentStates = simulation.nextState(new MultiState(STATE2, STATE3), 'b');
         assertEquals(3, currentStates.getStates().size());
         assertTrue(currentStates.getStates().containsAll(Arrays.asList(STATE1, STATE2, STATE3)));
 
-        currentStates = simulation.nextState(new NFASimulation.MultiState(STATE1, STATE2, STATE3), 'a');
+        currentStates = simulation.nextState(new MultiState(STATE1, STATE2, STATE3), 'a');
         assertEquals(2, currentStates.getStates().size());
         assertTrue(currentStates.getStates().containsAll(Arrays.asList(STATE1, STATE2)));
     }
@@ -58,7 +57,7 @@ public class NFASimulationTest {
         NFADesign nfaDesign = new NFADesign(STATE1, Arrays.asList(STATE3), NFA_RULEBOOK);
         NFASimulation simulation = new NFASimulation(nfaDesign);
 
-        List<NFASimulation.FAMultiRule> rules = simulation.rulesFor(new NFASimulation.MultiState(STATE1, STATE2));
+        List<NFASimulation.FAMultiRule> rules = simulation.rulesFor(new MultiState(STATE1, STATE2));
         assertEquals(2, rules.size());
         List<String> rulesAsStrings = new ArrayList<>();
         for (NFASimulation.FAMultiRule rule : rules) {
@@ -66,46 +65,13 @@ public class NFASimulationTest {
         }
         assertTrue(rulesAsStrings.containsAll(Arrays.asList("[1, 2] ---a--> [1, 2]", "[1, 2] ---b--> [2, 3]")));
 
-        rules = simulation.rulesFor(new NFASimulation.MultiState(STATE2, STATE3));
+        rules = simulation.rulesFor(new MultiState(STATE2, STATE3));
         assertEquals(2, rules.size());
         rulesAsStrings = new ArrayList<>();
         for (NFASimulation.FAMultiRule rule : rules) {
             rulesAsStrings.add(rule.toString());
         }
         assertTrue(rulesAsStrings.containsAll(Arrays.asList("[2, 3] ---a--> []", "[2, 3] ---b--> [1, 2, 3]")));
-    }
-
-    @Test
-    public void test_isSubset() {
-        Set<NFASimulation.MultiState> potentialSuperset = new HashSet<>();
-        potentialSuperset.add(new NFASimulation.MultiState(STATE1, STATE2));
-        Set<NFASimulation.MultiState> potentialSubset = new HashSet<>();
-        potentialSubset.add(new NFASimulation.MultiState(STATE2, STATE3));
-        potentialSubset.add(new NFASimulation.MultiState(STATE1, STATE2));
-        assertFalse(NFASimulation.MultiState.isSubset(potentialSuperset, potentialSubset));
-
-        potentialSuperset = new HashSet<>();
-        potentialSuperset.add(new NFASimulation.MultiState(STATE1, STATE2));
-        potentialSuperset.add(new NFASimulation.MultiState(STATE4, STATE5));
-        potentialSubset = new HashSet<>();
-        potentialSubset.add(new NFASimulation.MultiState(STATE2, STATE3));
-        potentialSubset.add(new NFASimulation.MultiState(STATE1, STATE2));
-        assertFalse(NFASimulation.MultiState.isSubset(potentialSuperset, potentialSubset));
-
-        potentialSuperset = new HashSet<>();
-        potentialSuperset.add(new NFASimulation.MultiState(STATE1, STATE2));
-        potentialSuperset.add(new NFASimulation.MultiState(STATE2, STATE3));
-        potentialSubset = new HashSet<>();
-        potentialSubset.add(new NFASimulation.MultiState(STATE2, STATE3));
-        assertTrue(NFASimulation.MultiState.isSubset(potentialSuperset, potentialSubset));
-    }
-
-    @Test
-    public void test_getIdentifiers() {
-        NFASimulation.MultiState states = new NFASimulation.MultiState(STATE1, STATE2, STATE3);
-        Set<Integer> identifiers = states.getIdentifiers();
-        assertEquals(3, identifiers.size());
-        assertTrue(identifiers.containsAll(Arrays.asList(1, 2, 3)));
     }
 
     @Test
@@ -119,7 +85,7 @@ public class NFASimulationTest {
         assertTrue(startStates.containsAll(Arrays.asList(STATE1, STATE2)));
 
        NFASimulation.StatesAndRules result =
-                simulation.discoverStatesAndRules(new HashSet<>(Arrays.asList(new NFASimulation.MultiState(startStates))));
+                simulation.discoverStatesAndRules(new HashSet<>(Arrays.asList(new MultiState(startStates))));
 
         assertEquals(4, result.getStates().size());
         assertEquals(8, result.getRules().size());
