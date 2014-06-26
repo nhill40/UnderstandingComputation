@@ -63,7 +63,7 @@ public class NFASimulation {
             moreStates.add(rule.follow());
         }
 
-        if (MultiState.isSubset(states, moreStates)) {
+        if (states.containsAll(moreStates)) {
             return new StatesAndRules(states, rules);
         } else {
             states.addAll(moreStates);
