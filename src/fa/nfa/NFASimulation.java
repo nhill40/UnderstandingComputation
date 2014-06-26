@@ -10,7 +10,10 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
+// TODO: this class is getting too heavy-duty - refactor so it lives in its own package and then split out all of
+// these inner classes into standalone classes living in that same package.
 public class NFASimulation {
     private NFADesign nfaDesign;
 
@@ -59,7 +62,7 @@ public class NFASimulation {
             moreStates.add(rule.follow());
         }
 
-        if (State.isSubset(states, moreStates)) {
+        if (MultiState.isSubset(states, moreStates)) {
             return new StatesAndRules(states, rules);
         } else {
             states.addAll(moreStates);
@@ -99,7 +102,7 @@ public class NFASimulation {
             StringBuilder sb = new StringBuilder();
             sb.append('[');
             String prefix = "";
-            for (Integer identifier : State.getIdentifiers(states)) {
+            for (Integer identifier : getIdentifiers()) {
                 sb.append(prefix).append(identifier);
                 prefix = ", ";
             }
@@ -122,6 +125,44 @@ public class NFASimulation {
         @Override
         public int hashCode() {
             return states.hashCode();
+        }
+
+        /**
+         * Very suspicious method that came from not being able to provide a traditional equals() implementation (see note
+         * above on "isEquivalentTo()" method).  Because we can't provide an equals, I'm basically recreating the
+         * functionality we should get for free from the "contains()" and "containsAll()" methods.
+         * @param potentialSuperset The set of states to check for being a potential superset of the provided potential
+         *                          subset.
+         * @param potentialSubset The set of states to check for being a potential subset of the provided potential
+         *                        superset.
+         * @return <code>true</code> if there is a superset/subset relationship, <code>false</code> otherwise.
+         */
+        // TODO: refactor to an instance method!
+        public static boolean isSubset(Set<NFASimulation.MultiState> potentialSuperset, Set<NFASimulation.MultiState> potentialSubset) {
+            // Save some machine cycles - we know "false" right off the bat if the superset is < than the subset.
+            if (potentialSuperset.size() < potentialSubset.size()) {
+                return false;
+            }
+
+            Set<Integer> supersetIdentifiers = new TreeSet<>();
+            for (NFASimulation.MultiState states : potentialSuperset) {
+                supersetIdentifiers.addAll(states.getIdentifiers());
+            }
+
+            Set<Integer> subsetIdentifiers = new TreeSet<>();
+            for (NFASimulation.MultiState states : potentialSubset) {
+                subsetIdentifiers.addAll(states.getIdentifiers());
+            }
+
+            return supersetIdentifiers.containsAll(subsetIdentifiers);
+        }
+
+        public Set<Integer> getIdentifiers() {
+            Set<Integer> identifiers = new TreeSet<>();
+            for (State state : states) {
+                identifiers.addAll(state.getIdentifiers());
+            }
+            return identifiers;
         }
     }
 
