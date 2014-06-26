@@ -25,10 +25,10 @@ public class NFASimulation {
      * @param character The input character to feed the NFA.
      * @return The possible current states taking free moves into consideration.
      */
-    public Set<State> nextState(Set<State> states, Character character) {
-        NFA nfa = nfaDesign.toNFA(states);
+    public MultiState nextState(MultiState states, Character character) {
+        NFA nfa = nfaDesign.toNFA(states.getStates());
         nfa.readCharacter(character);
-        return nfa.getCurrentStatesConsideringFreeMoves();
+        return new MultiState(nfa.getCurrentStatesConsideringFreeMoves());
     }
 
     /**
@@ -39,7 +39,7 @@ public class NFASimulation {
      * @param states The current states to be used when building the Multi Rule.
      * @return A collection of Multi Rules covering every possible input character.
      */
-    public List<FAMultiRule> rulesFor(Set<State> states) {
+    public List<FAMultiRule> rulesFor(MultiState states) {
         List<FAMultiRule> results = new ArrayList<>();
         for (Character character : nfaDesign.getRulebook().alphabet()) {
             results.add(new FAMultiRule(states, character, nextState(states, character)));
@@ -47,14 +47,14 @@ public class NFASimulation {
         return results;
     }
 
-    public StatesAndRules discoverStatesAndRules(Set<Set<State>> states) {
+    public StatesAndRules discoverStatesAndRules(Set<MultiState> states) {
 
         List<FAMultiRule> rules = new ArrayList<>();
-        for (Set<State> multiState : states) {
+        for (MultiState multiState : states) {
             rules.addAll(rulesFor(multiState));
         }
 
-        Set<Set<State>> moreStates = new HashSet<>();
+        Set<MultiState> moreStates = new HashSet<>();
         for (FAMultiRule rule : rules) {
             moreStates.add(rule.follow());
         }
@@ -70,40 +70,32 @@ public class NFASimulation {
     public DFADesign toDFADesign() {
         Set<State> startStates = nfaDesign.toNFA().getCurrentStatesConsideringFreeMoves();
         StatesAndRules statesAndRules =
-                discoverStatesAndRules(new HashSet<>(Arrays.asList(startStates)));
+                discoverStatesAndRules(new HashSet<>(Arrays.asList(new MultiState(startStates))));
 
         return statesAndRules.toDFADesign(startStates, nfaDesign);
     }
 
-    protected static class FAMultiRule {
+    public static class MultiState {
         private Set<State> states;
-        private Character character;
-        private Set<State> nextStates;
 
-        public FAMultiRule(Set<State> states, Character character, Set<State> nextStates) {
-            this.states = states;
-            this.character = character;
-            this.nextStates = nextStates;
+        public MultiState(State... states) {
+            this.states = new HashSet<>(Arrays.asList(states));
         }
 
-        /**
-         * @return the nextState.
-         */
-        public Set<State> follow() {
-            return nextStates;
+        public MultiState(Set<State> states) {
+            this.states = states;
+        }
+
+        public Set<State> getStates() {
+            return states;
+        }
+
+        public void setStates(Set<State> states) {
+            this.states = states;
         }
 
         @Override
         public String toString() {
-            // This is intended as a testing/debugging convenience
-            StringBuilder sb = new StringBuilder();
-            sb.append(statesToString(states));
-            sb.append(" ---").append(character).append("--> ");
-            sb.append(statesToString(nextStates));
-            return sb.toString();
-        }
-
-        public static String statesToString(Set<State> states) {
             StringBuilder sb = new StringBuilder();
             sb.append('[');
             String prefix = "";
@@ -114,23 +106,69 @@ public class NFASimulation {
             sb.append(']');
             return sb.toString();
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o == null || !(o instanceof MultiState)) return false;
+            MultiState otherMultiState = (MultiState) o;
+
+            if (states.size() != otherMultiState.getStates().size()) return false;
+
+            if (!states.containsAll(otherMultiState.getStates())) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            return states.hashCode();
+        }
+    }
+
+    protected static class FAMultiRule {
+        private MultiState states;
+        private Character character;
+        private MultiState nextStates;
+
+        public FAMultiRule(MultiState states, Character character, MultiState nextStates) {
+            this.states = states;
+            this.character = character;
+            this.nextStates = nextStates;
+        }
+
+        /**
+         * @return the nextState.
+         */
+        public MultiState follow() {
+            return nextStates;
+        }
+
+        @Override
+        public String toString() {
+            // This is intended as a testing/debugging convenience
+            StringBuilder sb = new StringBuilder();
+            sb.append(states);
+            sb.append(" ---").append(character).append("--> ");
+            sb.append(nextStates);
+            return sb.toString();
+        }
     }
 
     protected static class StatesAndRules {
-        private Set<Set<State>> states;
+        private Set<MultiState> states;
         private List<FAMultiRule> rules;
         private Set<State> singleStates = new HashSet<>();
 
-        private StatesAndRules(Set<Set<State>> states, List<FAMultiRule> rules) {
+        private StatesAndRules(Set<MultiState> states, List<FAMultiRule> rules) {
             this.states = states;
             this.rules = rules;
         }
 
-        public Set<Set<State>> getStates() {
+        public Set<MultiState> getStates() {
             return states;
         }
 
-        public void setStates(Set<Set<State>> states) {
+        public void setStates(Set<MultiState> states) {
             this.states = states;
         }
 
@@ -143,7 +181,7 @@ public class NFASimulation {
         }
 
         public FARule toSingleRule(FAMultiRule multiRule) {
-            State state = State.buildState(multiRule.states);
+            State state = State.buildState(multiRule.states.getStates());
             if (contains(singleStates, state)) {
                 for (State singleState : singleStates) {
                     if (singleState.isEquivalentTo(state)) {
@@ -155,7 +193,7 @@ public class NFASimulation {
                 singleStates.add(state);
             }
 
-            State nextState = State.buildState(multiRule.nextStates);
+            State nextState = State.buildState(multiRule.nextStates.getStates());
             if (contains(singleStates, nextState)) {
                 for (State singleState : singleStates) {
                     if (singleState.isEquivalentTo(nextState)) {
@@ -195,9 +233,9 @@ public class NFASimulation {
             }
 
             List<State> acceptStates = new ArrayList<>();
-            for (Set<State> state : states) {
-                if (nfaDesign.toNFA(state).accepting()) {
-                    State acceptState = State.buildState(state);
+            for (MultiState state : states) {
+                if (nfaDesign.toNFA(state.getStates()).accepting()) {
+                    State acceptState = State.buildState(state.getStates());
                     for (State singleState : singleStates) {
                         if (singleState.isEquivalentTo(acceptState)) {
                             acceptStates.add(singleState);

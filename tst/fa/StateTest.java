@@ -1,5 +1,6 @@
 package fa;
 
+import fa.nfa.NFASimulation;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -38,26 +39,26 @@ public class StateTest {
 
     @Test
     public void test_isSubset() {
-        Set<Set<State>> potentialSuperset = new HashSet<>();
-        potentialSuperset.add(new HashSet<>(Arrays.asList(STATE1, STATE2)));
-        Set<Set<State>> potentialSubset = new HashSet<>();
-        potentialSubset.add(new HashSet<>(Arrays.asList(STATE2, STATE3)));
-        potentialSubset.add(new HashSet<>(Arrays.asList(STATE1, STATE2)));
+        Set<NFASimulation.MultiState> potentialSuperset = new HashSet<>();
+        potentialSuperset.add(new NFASimulation.MultiState(STATE1, STATE2));
+        Set<NFASimulation.MultiState> potentialSubset = new HashSet<>();
+        potentialSubset.add(new NFASimulation.MultiState(STATE2, STATE3));
+        potentialSubset.add(new NFASimulation.MultiState(STATE1, STATE2));
         assertFalse(State.isSubset(potentialSuperset, potentialSubset));
 
         potentialSuperset = new HashSet<>();
-        potentialSuperset.add(new HashSet<>(Arrays.asList(STATE1, STATE2)));
-        potentialSuperset.add(new HashSet<>(Arrays.asList(STATE4, STATE5)));
+        potentialSuperset.add(new NFASimulation.MultiState(STATE1, STATE2));
+        potentialSuperset.add(new NFASimulation.MultiState(STATE4, STATE5));
         potentialSubset = new HashSet<>();
-        potentialSubset.add(new HashSet<>(Arrays.asList(STATE2, STATE3)));
-        potentialSubset.add(new HashSet<>(Arrays.asList(STATE1, STATE2)));
+        potentialSubset.add(new NFASimulation.MultiState(STATE2, STATE3));
+        potentialSubset.add(new NFASimulation.MultiState(STATE1, STATE2));
         assertFalse(State.isSubset(potentialSuperset, potentialSubset));
 
         potentialSuperset = new HashSet<>();
-        potentialSuperset.add(new HashSet<>(Arrays.asList(STATE1, STATE2)));
-        potentialSuperset.add(new HashSet<>(Arrays.asList(STATE2, STATE3)));
+        potentialSuperset.add(new NFASimulation.MultiState(STATE1, STATE2));
+        potentialSuperset.add(new NFASimulation.MultiState(STATE2, STATE3));
         potentialSubset = new HashSet<>();
-        potentialSubset.add(new HashSet<>(Arrays.asList(STATE2, STATE3)));
+        potentialSubset.add(new NFASimulation.MultiState(STATE2, STATE3));
         assertTrue(State.isSubset(potentialSuperset, potentialSubset));
     }
 

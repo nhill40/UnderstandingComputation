@@ -25,22 +25,22 @@ public class NFASimulationTest {
         NFADesign nfaDesign = new NFADesign(STATE1, Arrays.asList(STATE3), NFA_RULEBOOK);
         NFASimulation simulation = new NFASimulation(nfaDesign);
 
-        Set<State> currentStates;
-        currentStates = simulation.nextState(new HashSet<>(Arrays.asList(STATE1, STATE2)), 'a');
-        assertEquals(2, currentStates.size());
-        assertTrue(currentStates.containsAll(Arrays.asList(STATE1, STATE2)));
+        NFASimulation.MultiState currentStates;
+        currentStates = simulation.nextState(new NFASimulation.MultiState(STATE1, STATE2), 'a');
+        assertEquals(2, currentStates.getStates().size());
+        assertTrue(currentStates.getStates().containsAll(Arrays.asList(STATE1, STATE2)));
 
-        currentStates = simulation.nextState(new HashSet<>(Arrays.asList(STATE1, STATE2)), 'b');
-        assertEquals(2, currentStates.size());
-        assertTrue(currentStates.containsAll(Arrays.asList(STATE2, STATE3)));
+        currentStates = simulation.nextState(new NFASimulation.MultiState(STATE1, STATE2), 'b');
+        assertEquals(2, currentStates.getStates().size());
+        assertTrue(currentStates.getStates().containsAll(Arrays.asList(STATE2, STATE3)));
 
-        currentStates = simulation.nextState(new HashSet<>(Arrays.asList(STATE2, STATE3)), 'b');
-        assertEquals(3, currentStates.size());
-        assertTrue(currentStates.containsAll(Arrays.asList(STATE1, STATE2, STATE3)));
+        currentStates = simulation.nextState(new NFASimulation.MultiState(STATE2, STATE3), 'b');
+        assertEquals(3, currentStates.getStates().size());
+        assertTrue(currentStates.getStates().containsAll(Arrays.asList(STATE1, STATE2, STATE3)));
 
-        currentStates = simulation.nextState(new HashSet<>(Arrays.asList(STATE1, STATE2, STATE3)), 'a');
-        assertEquals(2, currentStates.size());
-        assertTrue(currentStates.containsAll(Arrays.asList(STATE1, STATE2)));
+        currentStates = simulation.nextState(new NFASimulation.MultiState(STATE1, STATE2, STATE3), 'a');
+        assertEquals(2, currentStates.getStates().size());
+        assertTrue(currentStates.getStates().containsAll(Arrays.asList(STATE1, STATE2)));
     }
 
     @Test
@@ -56,7 +56,7 @@ public class NFASimulationTest {
         NFADesign nfaDesign = new NFADesign(STATE1, Arrays.asList(STATE3), NFA_RULEBOOK);
         NFASimulation simulation = new NFASimulation(nfaDesign);
 
-        List<NFASimulation.FAMultiRule> rules = simulation.rulesFor(new HashSet<>(Arrays.asList(STATE1, STATE2)));
+        List<NFASimulation.FAMultiRule> rules = simulation.rulesFor(new NFASimulation.MultiState(STATE1, STATE2));
         assertEquals(2, rules.size());
         List<String> rulesAsStrings = new ArrayList<>();
         for (NFASimulation.FAMultiRule rule : rules) {
@@ -64,7 +64,7 @@ public class NFASimulationTest {
         }
         assertTrue(rulesAsStrings.containsAll(Arrays.asList("[1, 2] ---a--> [1, 2]", "[1, 2] ---b--> [2, 3]")));
 
-        rules = simulation.rulesFor(new HashSet<>(Arrays.asList(STATE2, STATE3)));
+        rules = simulation.rulesFor(new NFASimulation.MultiState(STATE2, STATE3));
         assertEquals(2, rules.size());
         rulesAsStrings = new ArrayList<>();
         for (NFASimulation.FAMultiRule rule : rules) {
@@ -84,7 +84,7 @@ public class NFASimulationTest {
         assertTrue(startStates.containsAll(Arrays.asList(STATE1, STATE2)));
 
        NFASimulation.StatesAndRules result =
-                simulation.discoverStatesAndRules(new HashSet<>(Arrays.asList(startStates)));
+                simulation.discoverStatesAndRules(new HashSet<>(Arrays.asList(new NFASimulation.MultiState(startStates))));
 
         assertEquals(4, result.getStates().size());
         assertEquals(8, result.getRules().size());
