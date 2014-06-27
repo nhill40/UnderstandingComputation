@@ -2,6 +2,7 @@ package fa.nfa.simulation;
 
 import fa.State;
 import fa.dfa.DFADesign;
+import fa.dfa.alternate.DFADesignAlt;
 import fa.nfa.NFADesign;
 import org.junit.Test;
 
@@ -84,7 +85,7 @@ public class NFASimulationTest {
         assertEquals(2, startStates.size());
         assertTrue(startStates.containsAll(Arrays.asList(STATE1, STATE2)));
 
-       StatesAndRules result =
+        StatesAndRules result =
                 simulation.discoverStatesAndRules(new HashSet<>(Arrays.asList(new MultiState(startStates))));
 
         assertEquals(4, result.getStates().size());
@@ -100,7 +101,7 @@ public class NFASimulationTest {
         assertTrue(nfaDesign.accepts("aab"));
         assertTrue(nfaDesign.accepts("bbbabb"));
 
-        DFADesign dfaDesign = simulation.toDFADesign();
+        DFADesignAlt dfaDesign = simulation.toDFADesign();
         assertFalse(dfaDesign.accepts("aaa"));
         assertTrue(dfaDesign.accepts("aab"));
         assertTrue(dfaDesign.accepts("bbbabb"));

@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-// TODO: this was originally intended as datastructure convienence (to combine a set of MultiStates and a list of MultiRules into one datastructure), but it took on a life of its own once I put "toDFADesign" in here - a design choice that needs to be re-evaluated!
+// TODO: this was originally intended as datastructure convenience (to combine a set of MultiStates and a list of MultiRules into one datastructure), but it took on a life of its own once I put "toDFADesign" in here - a design choice that needs to be re-evaluated!
 public class StatesAndRules {
     private Set<MultiState> states;
     private List<FAMultiRule> rules;

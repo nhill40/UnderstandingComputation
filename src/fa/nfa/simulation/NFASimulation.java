@@ -2,6 +2,8 @@ package fa.nfa.simulation;
 
 import fa.State;
 import fa.dfa.DFADesign;
+import fa.dfa.alternate.DFADesignAlt;
+import fa.dfa.alternate.DFARulebookAlt;
 import fa.nfa.NFA;
 import fa.nfa.NFADesign;
 
@@ -11,9 +13,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-// TODO: this class is getting too heavy-duty - refactor so it lives in its own package and then split out all of
-// these inner classes into standalone classes living in that same package.
 public class NFASimulation {
+
     private NFADesign nfaDesign;
 
     public NFASimulation(NFADesign nfaDesign) {
@@ -69,11 +70,54 @@ public class NFASimulation {
         }
     }
 
-    public DFADesign toDFADesign() {
-        Set<State> startStates = nfaDesign.toNFA().getCurrentStatesConsideringFreeMoves();
+    public DFADesignAlt toDFADesign() {
+        MultiState startState = new MultiState(nfaDesign.toNFA().getCurrentStatesConsideringFreeMoves());
         StatesAndRules statesAndRules =
-                discoverStatesAndRules(new HashSet<>(Arrays.asList(new MultiState(startStates))));
+                discoverStatesAndRules(new HashSet<>(Arrays.asList((startState))));
 
-        return statesAndRules.toDFADesign(startStates, nfaDesign);
+        Set<MultiState> acceptStates = new HashSet<>();
+        for (MultiState state : statesAndRules.getStates()) {
+            if (nfaDesign.toNFA(state.getStates()).accepting()) {
+                acceptStates.add(state);
+            }
+        }
+
+        return new DFADesignAlt(startState, acceptStates, new DFARulebookAlt(statesAndRules.getRules()));
+
+        /* Interesting alternative, but not sure it's the way to go...
+        // Unify rulebook
+        for (FAMultiRule rule : statesAndRules.getRules()) {
+            for (MultiState state : statesAndRules.getStates()) {
+                if (state.equals(rule.getStates())) {
+                    rule.setStates(state);
+                    break;
+                }
+            }
+
+            for (MultiState state : statesAndRules.getStates()) {
+                if (state.equals(rule.getNextStates())) {
+                    rule.setNextStates(state);
+                    break;
+                }
+            }
+        }
+
+        // Unify start state
+        for (MultiState state : statesAndRules.getStates()) {
+            if (state.equals(startState)) {
+                startState = state;
+                break;
+            }
+        }
+
+        // Unify accept state
+        Set<MultiState> acceptStates = new HashSet<>();
+        for (MultiState state : statesAndRules.getStates()) {
+            if (nfaDesign.toNFA(state.getStates()).accepting()) {
+                acceptStates.add(state);
+            }
+        } */
+
+        //return statesAndRules.toDFADesign(startState.getStates(), nfaDesign);
     }
 }

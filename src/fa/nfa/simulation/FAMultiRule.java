@@ -1,5 +1,7 @@
 package fa.nfa.simulation;
 
+import fa.State;
+
 public class FAMultiRule {
 
     private MultiState states;
@@ -10,6 +12,16 @@ public class FAMultiRule {
         this.states = states;
         this.character = character;
         this.nextStates = nextStates;
+    }
+
+    /**
+     * Determines if this particular rule applies to the given state/character.
+     * @param state the state to check for.
+     * @param character the character to check for.
+     * @return whether this rule applies to the given state/character.
+     */
+    public boolean appliesTo(MultiState state, Character character) {
+        return this.states.equals(state) && ((getCharacter() == null && character == null) || (getCharacter() == character));
     }
 
     /**
@@ -29,6 +41,14 @@ public class FAMultiRule {
 
     public MultiState getNextStates() {
         return nextStates;
+    }
+
+    public void setStates(MultiState states) {
+        this.states = states;
+    }
+
+    public void setNextStates(MultiState nextStates) {
+        this.nextStates = nextStates;
     }
 
     @Override
