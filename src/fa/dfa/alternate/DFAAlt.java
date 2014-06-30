@@ -2,7 +2,6 @@ package fa.dfa.alternate;
 
 import fa.nfa.simulation.MultiState;
 
-import java.util.List;
 import java.util.Set;
 
 public class DFAAlt {

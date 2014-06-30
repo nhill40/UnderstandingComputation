@@ -1,7 +1,6 @@
 package fa.nfa.simulation;
 
 import fa.State;
-import fa.dfa.DFADesign;
 import fa.dfa.alternate.DFADesignAlt;
 import fa.nfa.NFADesign;
 import org.junit.Test;
