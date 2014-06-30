@@ -11,7 +11,6 @@ import static fa.FATestStates.STATE1;
 import static fa.FATestStates.STATE2;
 import static fa.FATestStates.STATE3;
 import static fa.FATestStates.STATE4;
-import static fa.dfa.DFATestRules.DFA_RULEBOOOK;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 

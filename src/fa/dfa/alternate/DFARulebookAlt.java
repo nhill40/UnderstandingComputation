@@ -1,7 +1,7 @@
 package fa.dfa.alternate;
 
+import fa.MultiState;
 import fa.nfa.simulation.FAMultiRule;
-import fa.nfa.simulation.MultiState;
 
 import java.util.List;
 

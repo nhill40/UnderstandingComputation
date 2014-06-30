@@ -1,6 +1,6 @@
 package fa.dfa.alternate;
 
-import fa.nfa.simulation.MultiState;
+import fa.MultiState;
 
 import java.util.Set;
 

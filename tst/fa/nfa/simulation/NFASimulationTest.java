@@ -1,5 +1,6 @@
 package fa.nfa.simulation;
 
+import fa.MultiState;
 import fa.State;
 import fa.dfa.alternate.DFADesignAlt;
 import fa.nfa.NFADesign;

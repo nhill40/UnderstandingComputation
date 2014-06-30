@@ -1,5 +1,6 @@
 package fa.nfa.simulation;
 
+import fa.MultiState;
 import org.junit.Test;
 
 import java.util.Arrays;

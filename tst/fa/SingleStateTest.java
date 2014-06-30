@@ -10,23 +10,23 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class StateTest {
+public class SingleStateTest {
 
     @Test
     public void test_buildState() {
-        Set<State> inputStates = new HashSet<>();
-        inputStates.add(new State(1));
-        inputStates.add(new State(2));
-        State result = State.buildState(inputStates);
+        Set<SingleState> inputStates = new HashSet<>();
+        inputStates.add(new SingleState(1));
+        inputStates.add(new SingleState(2));
+        SingleState result = SingleState.buildState(inputStates);
         assertEquals(2, result.getIdentifiers().size());
         assertTrue(result.getIdentifiers().containsAll(Arrays.asList(1, 2)));
     }
 
     @Test
     public void test_isEquivalentTo() {
-        State firstState = new State(1 ,2);
-        State secondState = new State(2, 3);
-        State thirdState = new State(2, 1);
+        SingleState firstState = new SingleState(1 ,2);
+        SingleState secondState = new SingleState(2, 3);
+        SingleState thirdState = new SingleState(2, 1);
         assertTrue(firstState.isEquivalentTo(thirdState));
         assertFalse(firstState.isEquivalentTo(secondState));
     }

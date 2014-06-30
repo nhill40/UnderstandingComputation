@@ -1,5 +1,7 @@
 package fa.nfa.simulation;
 
+import fa.MultiState;
+
 import java.util.List;
 import java.util.Set;
 

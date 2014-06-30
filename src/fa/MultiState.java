@@ -1,13 +1,11 @@
-package fa.nfa.simulation;
-
-import fa.State;
+package fa;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-public  class MultiState {
+public  class MultiState implements State {
     private Set<State> states;
 
     public MultiState(State... states) {
@@ -56,6 +54,7 @@ public  class MultiState {
         return states.hashCode();
     }
 
+    @Override
     public Set<Integer> getIdentifiers() {
         Set<Integer> identifiers = new TreeSet<>();
         for (State state : states) {

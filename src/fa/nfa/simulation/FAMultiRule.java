@@ -1,5 +1,7 @@
 package fa.nfa.simulation;
 
+import fa.MultiState;
+
 public class FAMultiRule {
 
     private MultiState states;
