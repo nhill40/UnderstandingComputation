@@ -16,6 +16,7 @@ public  class MultiState implements State {
         this.states = states;
     }
 
+    @Override
     public Set<State> getStates() {
         return states;
     }

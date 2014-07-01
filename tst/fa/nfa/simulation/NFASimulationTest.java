@@ -1,8 +1,9 @@
 package fa.nfa.simulation;
 
+import fa.FARule;
 import fa.MultiState;
 import fa.State;
-import fa.dfa.alternate.DFADesignAlt;
+import fa.dfa.DFADesign;
 import fa.nfa.NFADesign;
 import org.junit.Test;
 
@@ -27,7 +28,7 @@ public class NFASimulationTest {
         NFADesign nfaDesign = new NFADesign(STATE1, Arrays.asList(STATE3), NFA_RULEBOOK);
         NFASimulation simulation = new NFASimulation(nfaDesign);
 
-        MultiState currentStates;
+        State currentStates;
         currentStates = simulation.nextState(new MultiState(STATE1, STATE2), 'a');
         assertEquals(2, currentStates.getStates().size());
         assertTrue(currentStates.getStates().containsAll(Arrays.asList(STATE1, STATE2)));
@@ -58,10 +59,10 @@ public class NFASimulationTest {
         NFADesign nfaDesign = new NFADesign(STATE1, Arrays.asList(STATE3), NFA_RULEBOOK);
         NFASimulation simulation = new NFASimulation(nfaDesign);
 
-        List<FAMultiRule> rules = simulation.rulesFor(new MultiState(STATE1, STATE2));
+        List<FARule> rules = simulation.rulesFor(new MultiState(STATE1, STATE2));
         assertEquals(2, rules.size());
         List<String> rulesAsStrings = new ArrayList<>();
-        for (FAMultiRule rule : rules) {
+        for (FARule rule : rules) {
             rulesAsStrings.add(rule.toString());
         }
         assertTrue(rulesAsStrings.containsAll(Arrays.asList("[1, 2] ---a--> [1, 2]", "[1, 2] ---b--> [2, 3]")));
@@ -69,7 +70,7 @@ public class NFASimulationTest {
         rules = simulation.rulesFor(new MultiState(STATE2, STATE3));
         assertEquals(2, rules.size());
         rulesAsStrings = new ArrayList<>();
-        for (FAMultiRule rule : rules) {
+        for (FARule rule : rules) {
             rulesAsStrings.add(rule.toString());
         }
         assertTrue(rulesAsStrings.containsAll(Arrays.asList("[2, 3] ---a--> []", "[2, 3] ---b--> [1, 2, 3]")));
@@ -101,7 +102,7 @@ public class NFASimulationTest {
         assertTrue(nfaDesign.accepts("aab"));
         assertTrue(nfaDesign.accepts("bbbabb"));
 
-        DFADesignAlt dfaDesign = simulation.toDFADesign();
+        DFADesign dfaDesign = simulation.toDFADesign();
         assertFalse(dfaDesign.accepts("aaa"));
         assertTrue(dfaDesign.accepts("aab"));
         assertTrue(dfaDesign.accepts("bbbabb"));

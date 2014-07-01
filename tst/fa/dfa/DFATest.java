@@ -1,8 +1,11 @@
 package fa.dfa;
 
+import fa.State;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import static fa.FATestStates.STATE1;
 import static fa.FATestStates.STATE3;
@@ -15,11 +18,18 @@ public class DFATest {
     @Test
     public void test_accepting() {
         // Given a current state and a list of accept states, the DFA can tell us if we are in an accept state:
-        assertTrue(new DFA(STATE1, Arrays.asList(STATE1, STATE3), DFA_RULEBOOOK).accepting());
-        assertFalse(new DFA(STATE1, Arrays.asList(STATE3), DFA_RULEBOOOK).accepting());
+        Set<State> acceptStates = new HashSet<>();
+        acceptStates.addAll(Arrays.asList(STATE1, STATE3));
+        assertTrue(new DFA(STATE1, acceptStates, DFA_RULEBOOOK).accepting());
+
+        acceptStates = new HashSet<>();
+        acceptStates.addAll(Arrays.asList(STATE3));
+        assertFalse(new DFA(STATE1, acceptStates, DFA_RULEBOOOK).accepting());
 
         // The dfa maintains current state & can be fed input one character at a time to mutate that state:
-        DFA dfa = new DFA(STATE1, Arrays.asList(STATE3), DFA_RULEBOOOK);
+        acceptStates = new HashSet<>();
+        acceptStates.addAll(Arrays.asList(STATE3));
+        DFA dfa = new DFA(STATE1, acceptStates, DFA_RULEBOOOK);
         assertFalse(dfa.accepting());
         dfa.readCharacter('b');
         assertFalse(dfa.accepting());
@@ -33,7 +43,9 @@ public class DFATest {
 
         // For convenience, we can also pass in a string (which will be converted to a char array under the covers that
         // the DFA will loop thru)
-        dfa = new DFA(STATE1, Arrays.asList(STATE3), DFA_RULEBOOOK);
+        acceptStates = new HashSet<>();
+        acceptStates.addAll(Arrays.asList(STATE3));
+        dfa = new DFA(STATE1, acceptStates, DFA_RULEBOOOK);
         assertFalse(dfa.accepting());
         dfa.readString("baaab");
         assertTrue(dfa.accepting());

@@ -2,7 +2,7 @@ package fa.dfa;
 
 import fa.State;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * A wrapper that creates a just-in-time DFA that allows us to execute String input against.  We can create one DFADesign:
@@ -14,10 +14,10 @@ import java.util.List;
  */
 public class DFADesign {
     private final State startState;
-    private final List<State> acceptStates;
+    private final Set<State> acceptStates;
     private final DFARulebook rulebook;
 
-    public DFADesign(State startState, List<State> acceptStates, DFARulebook rulebook) {
+    public DFADesign(State startState, Set<State> acceptStates, DFARulebook rulebook) {
         this.startState = startState;
         this.acceptStates = acceptStates;
         this.rulebook = rulebook;

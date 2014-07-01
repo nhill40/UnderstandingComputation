@@ -2,7 +2,7 @@ package fa.dfa;
 
 import fa.State;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * A simple computer: Deterministic Finite Automaton.  It knows (1) what state it is currently in, (2) what should be
@@ -10,10 +10,10 @@ import java.util.List;
  */
 public class DFA {
     private State currentState;
-    private List<State> acceptStates;
+    private Set<State> acceptStates;
     private DFARulebook rulebook;
 
-    public DFA(State currentState, List<State> acceptStates, DFARulebook rulebook) {
+    public DFA(State currentState, Set<State> acceptStates, DFARulebook rulebook) {
         this.currentState = currentState;
         this.acceptStates = acceptStates;
         this.rulebook = rulebook;

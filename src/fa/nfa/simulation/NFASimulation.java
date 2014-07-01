@@ -1,8 +1,11 @@
 package fa.nfa.simulation;
 
+import fa.FAMultiRule;
+import fa.FARule;
 import fa.MultiState;
-import fa.dfa.alternate.DFADesignAlt;
-import fa.dfa.alternate.DFARulebookAlt;
+import fa.State;
+import fa.dfa.DFADesign;
+import fa.dfa.DFARulebook;
 import fa.nfa.NFA;
 import fa.nfa.NFADesign;
 
@@ -27,7 +30,7 @@ public class NFASimulation {
      * @param character The input character to feed the NFA.
      * @return The possible current states taking free moves into consideration.
      */
-    public MultiState nextState(MultiState states, Character character) {
+    public State nextState(State states, Character character) {
         NFA nfa = nfaDesign.toNFA(states.getStates());
         nfa.readCharacter(character);
         return new MultiState(nfa.getCurrentStatesConsideringFreeMoves());
@@ -41,8 +44,8 @@ public class NFASimulation {
      * @param states The current states to be used when building the Multi Rule.
      * @return A collection of Multi Rules covering every possible input character.
      */
-    public List<FAMultiRule> rulesFor(MultiState states) {
-        List<FAMultiRule> results = new ArrayList<>();
+    public List<FARule> rulesFor(State states) {
+        List<FARule> results = new ArrayList<>();
         for (Character character : nfaDesign.getRulebook().alphabet()) {
             results.add(new FAMultiRule(states, character, nextState(states, character)));
         }
@@ -51,14 +54,14 @@ public class NFASimulation {
 
     public StatesAndRules discoverStatesAndRules(Set<MultiState> states) {
 
-        List<FAMultiRule> rules = new ArrayList<>();
-        for (MultiState multiState : states) {
+        List<FARule> rules = new ArrayList<>();
+        for (State multiState : states) {
             rules.addAll(rulesFor(multiState));
         }
 
         Set<MultiState> moreStates = new HashSet<>();
-        for (FAMultiRule rule : rules) {
-            moreStates.add(rule.follow());
+        for (FARule rule : rules) {
+            moreStates.add((MultiState) rule.follow());
         }
 
         if (states.containsAll(moreStates)) {
@@ -69,19 +72,19 @@ public class NFASimulation {
         }
     }
 
-    public DFADesignAlt toDFADesign() {
+    public DFADesign toDFADesign() {
         MultiState startState = new MultiState(nfaDesign.toNFA().getCurrentStatesConsideringFreeMoves());
         StatesAndRules statesAndRules =
                 discoverStatesAndRules(new HashSet<>(Arrays.asList((startState))));
 
-        Set<MultiState> acceptStates = new HashSet<>();
-        for (MultiState state : statesAndRules.getStates()) {
+        Set<State> acceptStates = new HashSet<>();
+        for (State state : statesAndRules.getStates()) {
             if (nfaDesign.toNFA(state.getStates()).accepting()) {
                 acceptStates.add(state);
             }
         }
 
-        return new DFADesignAlt(startState, acceptStates, new DFARulebookAlt(statesAndRules.getRules()));
+        return new DFADesign(startState, acceptStates, new DFARulebook(statesAndRules.getRules()));
 
         /* Interesting alternative, but not sure it's the way to go...
         // Unify rulebook

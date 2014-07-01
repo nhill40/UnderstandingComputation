@@ -1,6 +1,6 @@
 package fa.nfa;
 
-import fa.FARule;
+import fa.FASingleRule;
 import fa.State;
 
 import java.util.HashSet;
@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Set;
 
 public class NFARulebook {
-    private List<FARule> rules;
+    private List<FASingleRule> rules;
 
-    public NFARulebook(List<FARule> rules) {
+    public NFARulebook(List<FASingleRule> rules) {
         this.rules = rules;
     }
 
@@ -61,7 +61,7 @@ public class NFARulebook {
     public Set<State> followRulesFor(State state, Character character) {
         Set<State> possibleStates = new HashSet<>();
 
-        for (FARule rule : rulesFor(state, character)) {
+        for (FASingleRule rule : rulesFor(state, character)) {
             possibleStates.add(rule.follow());
         }
 
@@ -74,9 +74,9 @@ public class NFARulebook {
      * @param character the character to search the rules for.
      * @return the applicable rule.
      */
-    public Set<FARule> rulesFor(State state, Character character) {
-        Set<FARule> applicableRules = new HashSet<>();
-        for (FARule rule : rules) {
+    public Set<FASingleRule> rulesFor(State state, Character character) {
+        Set<FASingleRule> applicableRules = new HashSet<>();
+        for (FASingleRule rule : rules) {
             if (rule.appliesTo(state, character)) {
                 applicableRules.add(rule);
             }
@@ -85,7 +85,7 @@ public class NFARulebook {
         return applicableRules;
     }
 
-    public List<FARule> getRules() {
+    public List<FASingleRule> getRules() {
         return rules;
     }
 
@@ -95,7 +95,7 @@ public class NFARulebook {
      */
     public Set<Character> alphabet() {
         Set<Character> results = new HashSet<>();
-        for (FARule rule : rules) {
+        for (FASingleRule rule : rules) {
             if (rule.getCharacter() != null) results.add(rule.getCharacter());
         }
         return results;

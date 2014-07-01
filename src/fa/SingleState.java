@@ -1,6 +1,7 @@
 package fa;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -21,6 +22,13 @@ public class SingleState implements State {
     public SingleState(Set<Integer> identifiers) {
         if (identifiers != null)
             this.identifiers.addAll(identifiers);
+    }
+
+    @Override
+    public Set<State> getStates() {
+        Set<State> states = new HashSet<>();
+        states.add(this);
+        return states;
     }
 
     @Override

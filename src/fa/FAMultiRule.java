@@ -1,14 +1,12 @@
-package fa.nfa.simulation;
+package fa;
 
-import fa.MultiState;
+public class FAMultiRule implements FARule {
 
-public class FAMultiRule {
-
-    private MultiState states;
+    private State states;
     private Character character;
-    private MultiState nextStates;
+    private State nextStates;
 
-    public FAMultiRule(MultiState states, Character character, MultiState nextStates) {
+    public FAMultiRule(State states, Character character, State nextStates) {
         this.states = states;
         this.character = character;
         this.nextStates = nextStates;
@@ -20,18 +18,17 @@ public class FAMultiRule {
      * @param character the character to check for.
      * @return whether this rule applies to the given state/character.
      */
-    public boolean appliesTo(MultiState state, Character character) {
+    @Override
+    public boolean appliesTo(State state, Character character) {
         return this.states.equals(state) && ((getCharacter() == null && character == null) || (getCharacter() == character));
     }
 
-    /**
-     * @return the nextState.
-     */
-    public MultiState follow() {
+    @Override
+    public State follow() {
         return nextStates;
     }
 
-    public MultiState getStates() {
+    public State getStates() {
         return states;
     }
 
@@ -39,7 +36,7 @@ public class FAMultiRule {
         return character;
     }
 
-    public MultiState getNextStates() {
+    public State getNextStates() {
         return nextStates;
     }
 
