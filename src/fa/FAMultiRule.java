@@ -1,7 +1,12 @@
 package fa;
 
+/**
+ * A multi rule defines a state transition by encapsulating a collection of states, a character, and a collection of
+ * next states.
+ */
 public class FAMultiRule implements FARule {
 
+    // TODO: shouldn't these be MultiStates?
     private State states;
     private Character character;
     private State nextStates;
@@ -12,12 +17,6 @@ public class FAMultiRule implements FARule {
         this.nextStates = nextStates;
     }
 
-    /**
-     * Determines if this particular rule applies to the given state/character.
-     * @param state the state to check for.
-     * @param character the character to check for.
-     * @return whether this rule applies to the given state/character.
-     */
     @Override
     public boolean appliesTo(State state, Character character) {
         return this.states.equals(state) && ((getCharacter() == null && character == null) || (getCharacter() == character));
@@ -36,16 +35,8 @@ public class FAMultiRule implements FARule {
         return character;
     }
 
-    public State getNextStates() {
-        return nextStates;
-    }
-
     public void setStates(MultiState states) {
         this.states = states;
-    }
-
-    public void setNextStates(MultiState nextStates) {
-        this.nextStates = nextStates;
     }
 
     @Override

@@ -1,10 +1,11 @@
 package fa;
 
 /**
- * Superclass for all rule subtypes.  A rule is simply a combination of current state(s), an input character (for
- * lookup purposes) and nextState(s) (what state(s) to move to next).
+ * A single rule defines a state transition by encapsulating a single state, a character, and a single next state.
  */
 public class FASingleRule implements FARule {
+
+    // TODO: shouldn't these be single states?
     private State state;
     private Character character;
     private State nextState;
@@ -23,23 +24,12 @@ public class FASingleRule implements FARule {
         return state;
     }
 
-    public State getNextState() {
-        return nextState;
-    }
-
-    /**
-     * Determines if this particular rule applies to the given state/character.
-     * @param state the state to check for.
-     * @param character the character to check for.
-     * @return whether this rule applies to the given state/character.
-     */
+    @Override
     public boolean appliesTo(State state, Character character) {
         return this.state.equals(state) && ((getCharacter() == null && character == null) || (getCharacter() == character));
     }
 
-    /**
-     * @return the nextState.
-     */
+    @Override
     public State follow() {
         return nextState;
     }
