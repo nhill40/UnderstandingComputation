@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * Essentially, a collection of rules.
- * (1) A collection of "single" rules (i.e. rules with exactly 1 current state and exactly 1 next state)
+ * (1) A collection of rules
  * (2) Logic for how to lookup the appropriate rule for a given state/input
  * (3) A call to "follow" on the looked up rule to get next state
  */

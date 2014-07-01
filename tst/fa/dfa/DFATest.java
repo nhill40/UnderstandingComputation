@@ -23,12 +23,12 @@ public class DFATest {
         assertTrue(new DFA(STATE1, acceptStates, DFA_RULEBOOOK).accepting());
 
         acceptStates = new HashSet<>();
-        acceptStates.addAll(Arrays.asList(STATE3));
+        acceptStates.add(STATE3);
         assertFalse(new DFA(STATE1, acceptStates, DFA_RULEBOOOK).accepting());
 
         // The dfa maintains current state & can be fed input one character at a time to mutate that state:
         acceptStates = new HashSet<>();
-        acceptStates.addAll(Arrays.asList(STATE3));
+        acceptStates.add(STATE3);
         DFA dfa = new DFA(STATE1, acceptStates, DFA_RULEBOOOK);
         assertFalse(dfa.accepting());
         dfa.readCharacter('b');
@@ -44,7 +44,7 @@ public class DFATest {
         // For convenience, we can also pass in a string (which will be converted to a char array under the covers that
         // the DFA will loop thru)
         acceptStates = new HashSet<>();
-        acceptStates.addAll(Arrays.asList(STATE3));
+        acceptStates.add(STATE3);
         dfa = new DFA(STATE1, acceptStates, DFA_RULEBOOOK);
         assertFalse(dfa.accepting());
         dfa.readString("baaab");

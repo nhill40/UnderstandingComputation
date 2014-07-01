@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
+/**
+ * Represents a complex state which is comprised of several single states.
+ */
 public  class MultiState implements State {
     private Set<State> states;
 
@@ -19,10 +22,6 @@ public  class MultiState implements State {
     @Override
     public Set<State> getStates() {
         return states;
-    }
-
-    public void setStates(Set<State> states) {
-        this.states = states;
     }
 
     @Override

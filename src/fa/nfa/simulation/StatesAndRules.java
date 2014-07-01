@@ -6,6 +6,10 @@ import fa.MultiState;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Data structure to capture collections of states and rules as an intermediate step in between the NFA to DFA
+ * conversion process (an alternative to doing something convoluted like "Map<Set<MultiState>, List<FARule>>"
+ */
 public class StatesAndRules {
     private Set<MultiState> states;
     private List<FARule> rules;

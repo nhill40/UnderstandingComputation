@@ -1,5 +1,6 @@
 package fa.nfa.simulation;
 
+import fa.FAMultiRule;
 import fa.FARule;
 import fa.MultiState;
 import fa.State;
@@ -47,19 +48,11 @@ public class NFASimulationTest {
     }
 
     @Test
-    public void test_rulebookAlphabet() {
-        // Make sure our alphabet contains what we think it should
-        Set<Character> results = NFA_RULEBOOK.alphabet();
-        assertEquals(2, results.size());
-        assertTrue(results.containsAll(Arrays.asList('a', 'b')));
-    }
-
-    @Test
     public void test_rulesFor() {
         NFADesign nfaDesign = new NFADesign(STATE1, Arrays.asList(STATE3), NFA_RULEBOOK);
         NFASimulation simulation = new NFASimulation(nfaDesign);
 
-        List<FARule> rules = simulation.rulesFor(new MultiState(STATE1, STATE2));
+        List<FAMultiRule> rules = simulation.rulesFor(new MultiState(STATE1, STATE2));
         assertEquals(2, rules.size());
         List<String> rulesAsStrings = new ArrayList<>();
         for (FARule rule : rules) {

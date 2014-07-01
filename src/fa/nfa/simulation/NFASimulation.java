@@ -30,7 +30,7 @@ public class NFASimulation {
      * @param character The input character to feed the NFA.
      * @return The possible current states taking free moves into consideration.
      */
-    public State nextState(State states, Character character) {
+    public MultiState nextState(MultiState states, Character character) {
         NFA nfa = nfaDesign.toNFA(states.getStates());
         nfa.readCharacter(character);
         return new MultiState(nfa.getCurrentStatesConsideringFreeMoves());
@@ -44,18 +44,25 @@ public class NFASimulation {
      * @param states The current states to be used when building the Multi Rule.
      * @return A collection of Multi Rules covering every possible input character.
      */
-    public List<FARule> rulesFor(State states) {
-        List<FARule> results = new ArrayList<>();
+    public List<FAMultiRule> rulesFor(MultiState states) {
+        List<FAMultiRule> results = new ArrayList<>();
         for (Character character : nfaDesign.getRulebook().alphabet()) {
             results.add(new FAMultiRule(states, character, nextState(states, character)));
         }
         return results;
     }
 
+    /**
+     * Builds a "States and Rules" datastructure via recursive calls to itself utilizing the rulesFor() method to
+     * discover all of the possible states and rules for this simulation's NFADesign.
+     * @param states The start states to begin the discovery with.
+     * @return A datastructure of states and rules representing all the possible states and rules expressed in a way
+     *         that it could be used as input to build a DFA.
+     */
     public StatesAndRules discoverStatesAndRules(Set<MultiState> states) {
 
         List<FARule> rules = new ArrayList<>();
-        for (State multiState : states) {
+        for (MultiState multiState : states) {
             rules.addAll(rulesFor(multiState));
         }
 
@@ -72,6 +79,12 @@ public class NFASimulation {
         }
     }
 
+    /**
+     * Builds a states and rules datastructure from the discovery process on the NFADesign and then constructs an
+     * equivalent DFADesign that can then be used to answer the same questions in the same way as the original
+     * NFADesign.
+     * @return The DFADesign based on the original NFADesign.
+     */
     public DFADesign toDFADesign() {
         MultiState startState = new MultiState(nfaDesign.toNFA().getCurrentStatesConsideringFreeMoves());
         StatesAndRules statesAndRules =
@@ -85,41 +98,5 @@ public class NFASimulation {
         }
 
         return new DFADesign(startState, acceptStates, new DFARulebook(statesAndRules.getRules()));
-
-        /* Interesting alternative, but not sure it's the way to go...
-        // Unify rulebook
-        for (FAMultiRule rule : statesAndRules.getRules()) {
-            for (MultiState state : statesAndRules.getStates()) {
-                if (state.equals(rule.getStates())) {
-                    rule.setStates(state);
-                    break;
-                }
-            }
-
-            for (MultiState state : statesAndRules.getStates()) {
-                if (state.equals(rule.getNextStates())) {
-                    rule.setNextStates(state);
-                    break;
-                }
-            }
-        }
-
-        // Unify start state
-        for (MultiState state : statesAndRules.getStates()) {
-            if (state.equals(startState)) {
-                startState = state;
-                break;
-            }
-        }
-
-        // Unify accept state
-        Set<MultiState> acceptStates = new HashSet<>();
-        for (MultiState state : statesAndRules.getStates()) {
-            if (nfaDesign.toNFA(state.getStates()).accepting()) {
-                acceptStates.add(state);
-            }
-        } */
-
-        //return statesAndRules.toDFADesign(startState.getStates(), nfaDesign);
     }
 }
