@@ -5,7 +5,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Represents a simple state with a single identifier.
+ * Represents a simple state with a single identifier.  Perhaps the most important difference between this type of state
+ * and a "MultiState" is that 2 SingleStates can only be considered equivalent if they are the exact same object (i.e.
+ * no equals() or hashCode() methods have been provided).
  */
 public class SingleState implements State {
     private final Integer identifier;
