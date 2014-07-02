@@ -1,6 +1,5 @@
 package fa.nfa.simulation;
 
-import fa.FAMultiRule;
 import fa.FARule;
 import fa.MultiState;
 import fa.State;
@@ -44,10 +43,10 @@ public class NFASimulation {
      * @param states The current states to be used when building the Multi Rule.
      * @return A collection of Multi Rules covering every possible input character.
      */
-    public List<FAMultiRule> rulesFor(MultiState states) {
-        List<FAMultiRule> results = new ArrayList<>();
+    public List<FARule> rulesFor(MultiState states) {
+        List<FARule> results = new ArrayList<>();
         for (Character character : nfaDesign.getRulebook().alphabet()) {
-            results.add(new FAMultiRule(states, character, nextState(states, character)));
+            results.add(new FARule(states, character, nextState(states, character)));
         }
         return results;
     }

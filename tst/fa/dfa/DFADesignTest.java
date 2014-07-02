@@ -1,7 +1,6 @@
 package fa.dfa;
 
 import fa.FARule;
-import fa.FASingleRule;
 import fa.MultiState;
 import fa.State;
 import org.junit.Test;
@@ -42,10 +41,10 @@ public class DFADesignTest {
 
         List<FARule> rules = new ArrayList<>();
         rules.addAll(Arrays.asList(
-                new FASingleRule(STATE_1_OR_2, 'a', STATE_1_OR_2), new FASingleRule(STATE_1_OR_2, 'b', STATE_2_OR_3),
-                new FASingleRule(STATE_2_OR_3, 'a', STATE_NONE), new FASingleRule(STATE_2_OR_3, 'b', STATE_1_2_OR_3),
-                new FASingleRule(STATE_NONE, 'a', STATE_NONE), new FASingleRule(STATE_NONE, 'b', STATE_NONE),
-                new FASingleRule(STATE_1_2_OR_3, 'b', STATE_1_2_OR_3), new FASingleRule(STATE_1_2_OR_3, 'a', STATE_1_OR_2)
+                new FARule(STATE_1_OR_2, 'a', STATE_1_OR_2), new FARule(STATE_1_OR_2, 'b', STATE_2_OR_3),
+                new FARule(STATE_2_OR_3, 'a', STATE_NONE), new FARule(STATE_2_OR_3, 'b', STATE_1_2_OR_3),
+                new FARule(STATE_NONE, 'a', STATE_NONE), new FARule(STATE_NONE, 'b', STATE_NONE),
+                new FARule(STATE_1_2_OR_3, 'b', STATE_1_2_OR_3), new FARule(STATE_1_2_OR_3, 'a', STATE_1_OR_2)
         ));
         DFARulebook rulebook = new DFARulebook(rules);
 

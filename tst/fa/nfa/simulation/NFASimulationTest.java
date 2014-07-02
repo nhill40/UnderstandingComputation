@@ -1,6 +1,5 @@
 package fa.nfa.simulation;
 
-import fa.FAMultiRule;
 import fa.FARule;
 import fa.MultiState;
 import fa.State;
@@ -52,7 +51,7 @@ public class NFASimulationTest {
         NFADesign nfaDesign = new NFADesign(STATE1, Arrays.asList(STATE3), NFA_RULEBOOK);
         NFASimulation simulation = new NFASimulation(nfaDesign);
 
-        List<FAMultiRule> rules = simulation.rulesFor(new MultiState(STATE1, STATE2));
+        List<FARule> rules = simulation.rulesFor(new MultiState(STATE1, STATE2));
         assertEquals(2, rules.size());
         List<String> rulesAsStrings = new ArrayList<>();
         for (FARule rule : rules) {
