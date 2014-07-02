@@ -2,6 +2,7 @@ package fa.nfa.simulation;
 
 import fa.FARule;
 import fa.MultiState;
+import fa.SingleState;
 import fa.State;
 import fa.dfa.DFADesign;
 import fa.nfa.NFADesign;
@@ -74,7 +75,7 @@ public class NFASimulationTest {
         NFASimulation simulation = new NFASimulation(nfaDesign);
 
         // Just a baseline to establish where we are at to begin with - 2 possible current states
-        Set<State> startStates = nfaDesign.toNFA().getCurrentStatesConsideringFreeMoves();
+        Set<SingleState> startStates = nfaDesign.toNFA().getCurrentStatesConsideringFreeMoves();
         assertEquals(2, startStates.size());
         assertTrue(startStates.containsAll(Arrays.asList(STATE1, STATE2)));
 

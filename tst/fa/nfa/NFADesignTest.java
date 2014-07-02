@@ -1,6 +1,6 @@
 package fa.nfa;
 
-import fa.State;
+import fa.SingleState;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -52,7 +52,7 @@ public class NFADesignTest {
 
         // Assert existing functionality - convert an NFADesign into a J.I.T. NFA and ask it what it's current states
         // are, taking possible free moves into account.
-        Set<State> currentStatesConsideringFreeMoves = nfaDesign.toNFA().getCurrentStatesConsideringFreeMoves();
+        Set<SingleState> currentStatesConsideringFreeMoves = nfaDesign.toNFA().getCurrentStatesConsideringFreeMoves();
         assertEquals(2, currentStatesConsideringFreeMoves.size());
         assertTrue(currentStatesConsideringFreeMoves.containsAll(Arrays.asList(STATE1, STATE2)));
 

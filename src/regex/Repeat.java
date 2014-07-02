@@ -42,7 +42,7 @@ public class Repeat extends Pattern {
         NFADesign nfaDesign = pattern.toNFADesign();
 
         SingleState startState = new SingleState(1);
-        List<State> acceptStates = new ArrayList<>();
+        List<SingleState> acceptStates = new ArrayList<>();
         acceptStates.addAll(nfaDesign.getAcceptStates());
         acceptStates.add(startState);
 

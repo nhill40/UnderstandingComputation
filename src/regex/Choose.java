@@ -2,7 +2,6 @@ package regex;
 
 import fa.FARule;
 import fa.SingleState;
-import fa.State;
 import fa.nfa.NFADesign;
 import fa.nfa.NFARulebook;
 
@@ -47,7 +46,7 @@ public class Choose extends Pattern {
         NFADesign secondNFADesign = patterns.get(1).toNFADesign();
 
         SingleState startState = new SingleState(1);
-        List<State> acceptStates = new ArrayList<>();
+        List<SingleState> acceptStates = new ArrayList<>();
         acceptStates.addAll(firstNFADesign.getAcceptStates());
         acceptStates.addAll(secondNFADesign.getAcceptStates());
 

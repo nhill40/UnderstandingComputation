@@ -11,18 +11,18 @@ import java.util.TreeSet;
  * respective state collections are equivalent (appropriate equals() and hashCode() methods have been provided).
  */
 public  class MultiState implements State {
-    private Set<State> states;
+    private Set<SingleState> states;
 
-    public MultiState(State... states) {
+    public MultiState(SingleState... states) {
         this.states = new HashSet<>(Arrays.asList(states));
     }
 
-    public MultiState(Set<State> states) {
+    public MultiState(Set<SingleState> states) {
         this.states = states;
     }
 
     @Override
-    public Set<State> getStates() {
+    public Set<SingleState> getStates() {
         return states;
     }
 

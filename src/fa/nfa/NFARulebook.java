@@ -1,6 +1,7 @@
 package fa.nfa;
 
 import fa.FARule;
+import fa.SingleState;
 import fa.State;
 
 import java.util.HashSet;
@@ -20,14 +21,14 @@ public class NFARulebook {
      * @param states the current states (this method recursively adds to this collection).
      * @return the current states after considering all possible free moves.
      */
-    public Set<State> followFreeMoves(Set<State> states) {
-        Set<State> moreStates = nextStates(states, null);
+    public Set<SingleState> followFreeMoves(Set<SingleState> states) {
+        Set<SingleState> moreStates = nextStates(states, null);
 
         if (states.containsAll(moreStates)) {
             return states;
         }
 
-        Set<State> combinedStates = new HashSet<>();
+        Set<SingleState> combinedStates = new HashSet<>();
         combinedStates.addAll(moreStates);
         combinedStates.addAll(states);
         states = followFreeMoves(combinedStates);
@@ -41,10 +42,10 @@ public class NFARulebook {
      * @param character the character to search the rules for.
      * @return the next possible states.
      */
-    public Set<State> nextStates(Set<State> states, Character character) {
-        Set<State> possibleStates = new HashSet<>();
+    public Set<SingleState> nextStates(Set<SingleState> states, Character character) {
+        Set<SingleState> possibleStates = new HashSet<>();
 
-        for (State state : states) {
+        for (SingleState state : states) {
             possibleStates.addAll(followRulesFor(state, character));
         }
 
@@ -58,11 +59,11 @@ public class NFARulebook {
      * @param character the character to search the rules for.
      * @return
      */
-    public Set<State> followRulesFor(State state, Character character) {
-        Set<State> possibleStates = new HashSet<>();
+    public Set<SingleState> followRulesFor(SingleState state, Character character) {
+        Set<SingleState> possibleStates = new HashSet<>();
 
         for (FARule rule : rulesFor(state, character)) {
-            possibleStates.add(rule.follow());
+            possibleStates.add((SingleState) rule.follow());
         }
 
         return possibleStates;

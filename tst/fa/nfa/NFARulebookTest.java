@@ -1,6 +1,6 @@
 package fa.nfa;
 
-import fa.State;
+import fa.SingleState;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -26,7 +26,7 @@ public class NFARulebookTest {
     @Test
     public void test_nextStates() {
         // Given some current states & an input, our DFA rulebook can definitively tell you what states to move to next:
-        Set<State> possibleNextStates;
+        Set<SingleState> possibleNextStates;
         possibleNextStates = NFATestRules.NFA_RULEBOOK2.nextStates(new HashSet<>(Arrays.asList(STATE1)), 'b');
         assertEquals(2, possibleNextStates.size());
         assertTrue(possibleNextStates.containsAll(Arrays.asList(STATE1, STATE2)));
@@ -42,7 +42,7 @@ public class NFARulebookTest {
 
     @Test
     public void test_nextStatesWithFreeMoves() {
-        Set<State> possibleNextStates;
+        Set<SingleState> possibleNextStates;
         possibleNextStates = NFATestRules.NFA_RULEBOOK3.nextStates(new HashSet<>(Arrays.asList(STATE1)), null);
         assertEquals(2, possibleNextStates.size());
         assertTrue(possibleNextStates.containsAll(Arrays.asList(STATE2, STATE4)));

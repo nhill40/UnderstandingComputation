@@ -1,6 +1,6 @@
 package fa.nfa;
 
-import fa.State;
+import fa.SingleState;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -17,11 +17,11 @@ import java.util.Set;
  */
 
 public class NFADesign {
-    private final State startState;
-    private final List<State> acceptStates;
+    private final SingleState startState;
+    private final List<SingleState> acceptStates;
     private final NFARulebook rulebook;
 
-    public NFADesign(State startState, List<State> acceptStates, NFARulebook rulebook) {
+    public NFADesign(SingleState startState, List<SingleState> acceptStates, NFARulebook rulebook) {
         this.startState = startState;
         this.acceptStates = acceptStates;
         this.rulebook = rulebook;
@@ -32,7 +32,7 @@ public class NFADesign {
      * @return the NFA.
      */
     public NFA toNFA() {
-        Set<State> currentStates = new HashSet<>();
+        Set<SingleState> currentStates = new HashSet<>();
         currentStates.add(startState);
         return new NFA(currentStates, acceptStates, rulebook);
     }
@@ -41,7 +41,7 @@ public class NFADesign {
      * Creates a just-in-time NFA based on the provided current states, the accept states, and rulebook.
      * @return the NFA.
      */
-    public NFA toNFA(Set<State> currentStates) {
+    public NFA toNFA(Set<SingleState> currentStates) {
         return new NFA(currentStates, acceptStates, rulebook);
     }
 
@@ -49,7 +49,7 @@ public class NFADesign {
      * Creates a just-in-time NFA based on the provided current state, the accept states, and rulebook.
      * @return the NFA.
      */
-    public NFA toNFA(State currentState) {
+    public NFA toNFA(SingleState currentState) {
         return new NFA(new HashSet<>(Arrays.asList(currentState)), acceptStates, rulebook);
     }
 
@@ -64,11 +64,11 @@ public class NFADesign {
         return nfa.accepting();
     }
 
-    public State getStartState() {
+    public SingleState getStartState() {
         return startState;
     }
 
-    public List<State> getAcceptStates() {
+    public List<SingleState> getAcceptStates() {
         return acceptStates;
     }
 

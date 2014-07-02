@@ -1,5 +1,6 @@
 package fa.nfa;
 
+import fa.SingleState;
 import fa.State;
 
 import java.util.List;
@@ -7,11 +8,11 @@ import java.util.Set;
 
 public class NFA {
 
-    private Set<State> currentStates;
-    private List<State> acceptStates;
+    private Set<SingleState> currentStates;
+    private List<SingleState> acceptStates;
     private NFARulebook rulebook;
 
-    public NFA(Set<State> currentStates, List<State> acceptStates, NFARulebook rulebook) {
+    public NFA(Set<SingleState> currentStates, List<SingleState> acceptStates, NFARulebook rulebook) {
         this.currentStates = currentStates;
         this.acceptStates = acceptStates;
         this.rulebook = rulebook;
@@ -59,7 +60,7 @@ public class NFA {
      * Provides current states taking any possible free moves into consideration.
      * @return Possible current states taking free moves into consideration.
      */
-    public Set<State> getCurrentStatesConsideringFreeMoves() {
+    public Set<SingleState> getCurrentStatesConsideringFreeMoves() {
         return rulebook.followFreeMoves(currentStates);
     }
 

@@ -17,10 +17,8 @@ public class SingleState implements State {
     }
 
     @Override
-    public Set<State> getStates() {
-        Set<State> states = new HashSet<>();
-        states.add(this);
-        return states;
+    public Set<SingleState> getStates() {
+        return new HashSet<>(Arrays.asList(this));
     }
 
     @Override
