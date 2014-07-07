@@ -1,6 +1,7 @@
 package fa;
 
 public class FATestStates {
+    public static final SingleState STATE0 = new SingleState(0);
     public static final SingleState STATE1 = new SingleState(1);
     public static final SingleState STATE2 = new SingleState(2);
     public static final SingleState STATE3 = new SingleState(3);

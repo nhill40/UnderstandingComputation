@@ -1,12 +1,15 @@
 package fa.nfa;
 
+import fa.FARule;
 import fa.SingleState;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import static fa.FATestStates.STATE0;
 import static fa.FATestStates.STATE1;
 import static fa.FATestStates.STATE2;
 import static fa.FATestStates.STATE3;
@@ -75,5 +78,27 @@ public class NFADesignTest {
         assertEquals(3, currentStatesConsideringFreeMoves.size());
         assertTrue(currentStatesConsideringFreeMoves.containsAll(Arrays.asList(STATE1, STATE2, STATE3)));
         // Refer to NFASimulationTest to see this functionality automated
+    }
+
+    @Test
+    public void test_accepts_parens() {
+        // This is a commmon way for languages to make sure brackets/parens are "balanced" (i.e. same # of open as closes)
+        List<FARule> rules = Arrays.asList(
+                new FARule(STATE0, '(', STATE1), new FARule(STATE1, ')', STATE0),
+                new FARule(STATE1, '(', STATE2), new FARule(STATE2, ')', STATE1),
+                new FARule(STATE2, '(', STATE3), new FARule(STATE3, ')', STATE2));
+        NFARulebook rulebook = new NFARulebook(rules);
+
+        NFADesign nfaDesign = new NFADesign(STATE0, Arrays.asList(STATE0), rulebook);
+        assertFalse(nfaDesign.accepts("(()"));
+        assertFalse(nfaDesign.accepts("())"));
+        assertTrue(nfaDesign.accepts("(())"));
+        assertTrue(nfaDesign.accepts("(()(()()))"));
+
+        // Here is a flaw though - we can't make rules out to infinity - these brackets are balanced, but our rulebook
+        // does not go out enough levels to recognize it:
+        assertFalse(nfaDesign.accepts("(((())))"));  // Should be TRUE!
+        // We can always add more levels, but there is no real solution to this problem with an NFA (no matter how many
+        // rules we provide, nesting could always go 1 level deeper).
     }
 }

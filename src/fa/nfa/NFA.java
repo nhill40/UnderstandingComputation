@@ -8,6 +8,8 @@ import java.util.Set;
 
 public class NFA {
 
+    // TODO: not 100% sold that we should explicitly deal with SingleState here, refactoring may have been overzealous - might have been smarter to leave this as the "State" interface.
+    // Refer to "Brzozowski's Algorithm" where we reverse a DFA, producing a new NFA (which would need to deal with MultiStates).
     private Set<SingleState> currentStates;
     private List<SingleState> acceptStates;
     private NFARulebook rulebook;
