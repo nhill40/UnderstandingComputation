@@ -5,8 +5,9 @@ import fa.State;
 import java.util.Set;
 
 /**
- * A wrapper that creates a just-in-time DFA that allows us to execute String input against.  We can create one DFADesign:
- *      DFADesign dfaDesign = new DFADesign(1, Arrays.asList(3), rulebook);
+ * A wrapper that creates a just-in-time DFA that allows us to execute String input against.  We can create one
+ * DFADesign:
+ *      DFADesign dfaDesign = new DFADesign(STATE1, Arrays.asList(STATE3), DFA_RULEBOOK);
  *
  * And then repeatedly call this:
  *      dfaDesign.accepts("mystring");

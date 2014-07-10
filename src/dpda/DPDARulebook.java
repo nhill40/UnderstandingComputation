@@ -41,10 +41,25 @@ public class DPDARulebook {
         return null;
     }
 
+    /**
+     * Checks to see if this rulebook contains any valid rules for the provided configuration (state + stack) and
+     * character.
+     * @param configuration the configuration to use in checking for a valid rule.
+     * @param character the character to use in checking for a valid rule.
+     * @return <code>true</code> if a valid rule was found for the provided configuration/character, <code>false</code>
+     *         if otherwise.
+     */
     public boolean appliesTo(PDAConfiguration configuration, Character character) {
         return (ruleFor(configuration, character) != null);
     }
 
+    /**
+     * For the provided configuration, scans the rules for any free moves (i.e. any rule where the input character has
+     * been specified as null) and then modifies the provided configuration by recursively calling those rules until no
+     * more free moves have been discovered.
+     * @param configuration the configuration to use as a starting point for discovering/following free moves.
+     * @return the modified configuration after following any/all free moves available to it.
+     */
     public PDAConfiguration followFreeMoves(PDAConfiguration configuration) {
         if (appliesTo(configuration, null)) {
             configuration = followFreeMoves(nextConfiguration(configuration, null));
