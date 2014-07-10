@@ -55,7 +55,7 @@ public class NFADesignTest {
 
         // Assert existing functionality - convert an NFADesign into a J.I.T. NFA and ask it what it's current states
         // are, taking possible free moves into account.
-        Set<SingleState> currentStatesConsideringFreeMoves = nfaDesign.toNFA().getCurrentStatesConsideringFreeMoves();
+        Set<SingleState> currentStatesConsideringFreeMoves = nfaDesign.toNFA().getCurrentStates();
         assertEquals(2, currentStatesConsideringFreeMoves.size());
         assertTrue(currentStatesConsideringFreeMoves.containsAll(Arrays.asList(STATE1, STATE2)));
 
@@ -63,18 +63,18 @@ public class NFADesignTest {
         // functionality of specifying the NFA's currentStates (which previously defaulted to the start shape).  We can
         // now simulate an NFA starting from any of its valid states (i.e. not just the start state).
         currentStatesConsideringFreeMoves =
-                nfaDesign.toNFA(STATE2).getCurrentStatesConsideringFreeMoves();
+                nfaDesign.toNFA(STATE2).getCurrentStates();
         assertEquals(1, currentStatesConsideringFreeMoves.size());
         assertTrue(currentStatesConsideringFreeMoves.contains(STATE2));
 
         currentStatesConsideringFreeMoves =
-                nfaDesign.toNFA(STATE3).getCurrentStatesConsideringFreeMoves();
+                nfaDesign.toNFA(STATE3).getCurrentStates();
         assertEquals(2, currentStatesConsideringFreeMoves.size());
         assertTrue(currentStatesConsideringFreeMoves.containsAll(Arrays.asList(STATE2, STATE3)));
 
         NFA nfa = nfaDesign.toNFA(new HashSet<>(Arrays.asList(STATE2, STATE3)));
         nfa.readCharacter('b');
-        currentStatesConsideringFreeMoves = nfa.getCurrentStatesConsideringFreeMoves();
+        currentStatesConsideringFreeMoves = nfa.getCurrentStates();
         assertEquals(3, currentStatesConsideringFreeMoves.size());
         assertTrue(currentStatesConsideringFreeMoves.containsAll(Arrays.asList(STATE1, STATE2, STATE3)));
         // Refer to NFASimulationTest to see this functionality automated

@@ -32,7 +32,7 @@ public class NFASimulation {
     public MultiState nextState(MultiState states, Character character) {
         NFA nfa = nfaDesign.toNFA(states.getStates());
         nfa.readCharacter(character);
-        return new MultiState(nfa.getCurrentStatesConsideringFreeMoves());
+        return new MultiState(nfa.getCurrentStates());
     }
 
     /**
@@ -85,7 +85,7 @@ public class NFASimulation {
      * @return The DFADesign based on the original NFADesign.
      */
     public DFADesign toDFADesign() {
-        MultiState startState = new MultiState(nfaDesign.toNFA().getCurrentStatesConsideringFreeMoves());
+        MultiState startState = new MultiState(nfaDesign.toNFA().getCurrentStates());
         StatesAndRules statesAndRules =
                 discoverStatesAndRules(new HashSet<>(Arrays.asList((startState))));
 

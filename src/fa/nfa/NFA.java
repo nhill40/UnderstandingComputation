@@ -1,11 +1,14 @@
 package fa.nfa;
 
 import fa.SingleState;
-import fa.State;
 
 import java.util.List;
 import java.util.Set;
 
+/**
+ * A simple computer: Non-Deterministic Finite Automaton.  It knows (1) what states it is possibly in, (2) what should
+ * be considered acceptStates, and (3) what rules dictate movement between states.
+ */
 public class NFA {
 
     // TODO: not 100% sold that we should explicitly deal with SingleState here, refactoring may have been overzealous - might have been smarter to leave this as the "State" interface.
@@ -27,7 +30,7 @@ public class NFA {
     public boolean accepting() {
         boolean accepting = false;
 
-        for (State currentState : getCurrentStatesConsideringFreeMoves()) {
+        for (SingleState currentState : getCurrentStates()) {
             if (acceptStates.contains(currentState)) {
                 accepting = true;
                 break;
@@ -41,7 +44,7 @@ public class NFA {
      * @param character the character to evaluate.
      */
     public void readCharacter(Character character) {
-        currentStates = rulebook.nextStates(getCurrentStatesConsideringFreeMoves(), character);
+        currentStates = rulebook.nextStates(getCurrentStates(), character);
     }
 
     /**
@@ -62,7 +65,7 @@ public class NFA {
      * Provides current states taking any possible free moves into consideration.
      * @return Possible current states taking free moves into consideration.
      */
-    public Set<SingleState> getCurrentStatesConsideringFreeMoves() {
+    public Set<SingleState> getCurrentStates() {
         return rulebook.followFreeMoves(currentStates);
     }
 

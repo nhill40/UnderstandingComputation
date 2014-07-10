@@ -75,7 +75,7 @@ public class NFASimulationTest {
         NFASimulation simulation = new NFASimulation(nfaDesign);
 
         // Just a baseline to establish where we are at to begin with - 2 possible current states
-        Set<SingleState> startStates = nfaDesign.toNFA().getCurrentStatesConsideringFreeMoves();
+        Set<SingleState> startStates = nfaDesign.toNFA().getCurrentStates();
         assertEquals(2, startStates.size());
         assertTrue(startStates.containsAll(Arrays.asList(STATE1, STATE2)));
 

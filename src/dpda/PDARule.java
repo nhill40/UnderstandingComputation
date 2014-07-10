@@ -2,6 +2,7 @@ package dpda;
 
 import fa.State;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -33,6 +34,39 @@ public class PDARule {
     public boolean appliesTo(PDAConfiguration configuration, Character character) {
         return this.state.equals(configuration.getState())
                 && (this.popCharacter.equals(configuration.getStack().top()))
-                && this.character.equals(character);
+                && ((this.character == null && character == null) || (this.character == character));
+    }
+
+    /**
+     * Return a newly constructed PDA Configuration built using this rule's specified nextState as well as a newly
+     * constructed Stack based upon the configuration changes (the pop + push characters) specified by this rule.
+     * @param configuration the PDA Configuration to use as a starting point for modifying the stack.
+     * @return the newly constructed PDA Configuration, containing this rule's nextState as its current state and a
+     *         modified stack based upon this rule's pop/push characters.
+     */
+    public PDAConfiguration follow(PDAConfiguration configuration) {
+        return new PDAConfiguration(nextState, nextStack(configuration));
+    }
+
+    /**
+     * A method that modifies a given PDA Configuration's stack by popping of its topmost character and then pushing
+     * this rule's "push characters" on top of the stack.
+     * @param configuration the configuration to pull the starting point stack from.
+     * @return the modified stack.
+     */
+    public Stack nextStack(PDAConfiguration configuration) {
+        // Pop the topmost item off the provided configuration's stack and capture that new stack as poppedStack
+        Stack poppedStack = configuration.getStack().pop();
+
+        // Push characters are stored in readability-friendly order, but need to be pushed on in reverse order.
+        Collections.reverse(pushCharacters);
+        // Push this rule's push characters to the top of the stack.
+        for (Character pushCharacter : pushCharacters) {
+            poppedStack = poppedStack.push(pushCharacter);
+        }
+        // Reverse again for readability.
+        Collections.reverse(pushCharacters);
+
+        return poppedStack;
     }
 }
