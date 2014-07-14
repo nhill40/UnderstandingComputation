@@ -1,4 +1,6 @@
-package dpda;
+package pda.dpda;
+
+import pda.PDARule;
 
 import java.util.ArrayList;
 import java.util.Arrays;

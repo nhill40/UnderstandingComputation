@@ -28,15 +28,12 @@ public class NFA {
      * @return whether or not the NFA is in accepting state.
      */
     public boolean accepting() {
-        boolean accepting = false;
-
         for (SingleState currentState : getCurrentStates()) {
             if (acceptStates.contains(currentState)) {
-                accepting = true;
-                break;
+                return true;
             }
         }
-        return accepting;
+        return false;
     }
 
     /**

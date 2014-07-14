@@ -1,13 +1,16 @@
-package dpda;
+package pda.dpda;
 
 import org.junit.Test;
+import pda.PDAConfiguration;
+import pda.PDARule;
+import pda.Stack;
 
 import java.util.Arrays;
 
-import static dpda.DPDATestRules.DPDARULEBOOK;
 import static fa.FATestStates.STATE1;
 import static fa.FATestStates.STATE2;
 import static org.junit.Assert.assertEquals;
+import static pda.dpda.DPDATestRules.DPDARULEBOOK;
 
 public class DPDARulebookTest {
 

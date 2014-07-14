@@ -1,4 +1,4 @@
-package dpda;
+package pda;
 
 import org.junit.Before;
 import org.junit.Test;

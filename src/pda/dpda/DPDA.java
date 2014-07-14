@@ -1,6 +1,7 @@
-package dpda;
+package pda.dpda;
 
 import fa.State;
+import pda.PDAConfiguration;
 
 import java.util.List;
 

@@ -1,4 +1,7 @@
-package dpda;
+package pda.dpda;
+
+import pda.PDAConfiguration;
+import pda.PDARule;
 
 import java.util.List;
 

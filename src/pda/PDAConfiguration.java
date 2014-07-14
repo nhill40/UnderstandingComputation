@@ -1,4 +1,4 @@
-package dpda;
+package pda;
 
 import fa.State;
 import fa.StuckState;
@@ -43,5 +43,22 @@ public class PDAConfiguration {
      */
     public PDAConfiguration stuck() {
         return new PDAConfiguration(new StuckState(), stack);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o != null && o instanceof PDAConfiguration) {
+            PDAConfiguration otherConfig = (PDAConfiguration) o;
+            if (this.state.equals(otherConfig.getState()) && this.stack.equals(otherConfig.getStack())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return 1;
     }
 }

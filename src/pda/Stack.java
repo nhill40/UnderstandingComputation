@@ -1,4 +1,4 @@
-package dpda;
+package pda;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -53,5 +53,14 @@ public class Stack {
             sb.append(contents.get(i));
         }
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o != null && o instanceof Stack) {
+            Stack otherStack = (Stack) o;
+            return contents.size() == otherStack.contents.size() && contents.containsAll(otherStack.contents);
+        }
+        return false;
     }
 }

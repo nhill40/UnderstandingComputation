@@ -1,4 +1,4 @@
-package dpda;
+package pda;
 
 import fa.State;
 
