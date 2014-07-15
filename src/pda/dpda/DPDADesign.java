@@ -17,6 +17,7 @@ import java.util.List;
  *
  */
 public class DPDADesign {
+
     private State startState;
     private Character bottomCharacter;
     private List<State> acceptStates;
