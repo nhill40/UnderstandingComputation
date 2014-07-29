@@ -103,4 +103,45 @@ public class DTMTest {
         dtm.run();
         assertEquals("state=6, tape=#<Tape _XXXXXXXX(X)_>", dtm.getCurrentConfiguration().toString());
     }
+
+    @Test
+    public void test_internalStorageSimulation() {
+        // This rulebook demonstrates that a simple Turing machine can simulate the power of "internal storage" (like
+        // RAM) to be used to store an intermediate value for later reference.  Rather than hold in someplace
+        // (like RAM), we'll simply scan left-to-right across the tape "remembering" the intermediate value we want to
+        // write.  Once we find a blank, we'll right our intermediate value there for later retrieval.
+        // Note this is tedious from a couple standpoints - (1) the amount of time it takes to traverse the tape to
+        // write/retrieve the "remembered" value and (2) the number of states required (we need to designate 1 state
+        // per "remembered" value).  But nonetheless, this proves that the enhancement of internal storage does not add
+        // any special power to a plain old DTM.
+        DTMRulebook rulebook = new DTMRulebook(Arrays.asList(
+                // STATE1 = read the first character from the tape
+                new TMRule(STATE1, 'a', STATE2, 'a', Direction.RIGHT), // remember a
+                new TMRule(STATE1, 'b', STATE3, 'b', Direction.RIGHT), // remember b
+                new TMRule(STATE1, 'c', STATE4, 'c', Direction.RIGHT), // remember c
+
+                // STATE2 = Scan left-to-right looking for the end of the string ("remembering" a)
+                new TMRule(STATE2, 'a', STATE2, 'a', Direction.RIGHT), // skip a
+                new TMRule(STATE2, 'b', STATE2, 'b', Direction.RIGHT), // skip b
+                new TMRule(STATE2, 'c', STATE2, 'c', Direction.RIGHT), // skip c
+                new TMRule(STATE2, '_', STATE5, 'a', Direction.RIGHT), // find a blank, write an a (this is how we "remember")
+
+                // STATE3 = Scan left-to-right looking for the end of the string ("remembering" b)
+                new TMRule(STATE3, 'a', STATE3, 'a', Direction.RIGHT), // skip a
+                new TMRule(STATE3, 'b', STATE3, 'b', Direction.RIGHT), // skip b
+                new TMRule(STATE3, 'c', STATE3, 'c', Direction.RIGHT), // skip c
+                new TMRule(STATE3, '_', STATE5, 'b', Direction.RIGHT), // find a blank, write a b (this is how we "remember")
+
+                // STATE4 = Scan left-to-right looking for the end of the string ("remembering" c)
+                new TMRule(STATE4, 'a', STATE4, 'a', Direction.RIGHT), // skip a
+                new TMRule(STATE4, 'b', STATE4, 'b', Direction.RIGHT), // skip b
+                new TMRule(STATE4, 'c', STATE4, 'c', Direction.RIGHT), // skip c
+                new TMRule(STATE4, '_', STATE5, 'c', Direction.RIGHT) // find a blank, write a c (this is how we "remember")
+        ));
+
+        Tape tape = new Tape(new LinkedList<Character>(), 'b', new LinkedList<>(Arrays.asList('c','b','c','a')), '_');
+        DTM dtm = new DTM(new TMConfiguration(STATE1, tape), new ArrayList<State>(Arrays.asList(STATE5)), rulebook);
+        dtm.run();
+        assertEquals("#<Tape bcbcab(_)>", dtm.getCurrentConfiguration().getTape().toString());
+    }
 }

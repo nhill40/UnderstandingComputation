@@ -46,4 +46,8 @@ public class DTMRulebook {
     public boolean appliesTo(TMConfiguration configuration) {
         return ruleFor(configuration) != null;
     }
+
+    public List<TMRule> getRules() {
+        return rules;
+    }
 }
