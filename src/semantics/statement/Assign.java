@@ -5,6 +5,13 @@ import semantics.expression.Expression;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * An assignment statement used to assign a value to a variable via the reduction/evaluation of an expression (which
+ * itself must reduce to a Number or Boolean).  Examples:
+ *      y = 3 + 4
+ *      y = x
+ *      y = x < 2
+ */
 public class Assign implements Statement {
     private String name;
     private Expression expression;

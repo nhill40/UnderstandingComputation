@@ -2,6 +2,12 @@ package semantics.expression;
 
 import java.util.Map;
 
+/**
+ * An Add expression where the left and right expressions must evaluate/reduce down to Numbers.  Examples:
+ *       3 * 4
+ *       x * y
+ *      (y + 2) * 5
+ */
 public class Multiply implements Expression {
 
     private Expression left;

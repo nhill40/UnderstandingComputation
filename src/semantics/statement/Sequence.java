@@ -5,6 +5,13 @@ import semantics.expression.Expression;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A Sequence is a special compound statement that allows you to chain several statements together.  Note that the
+ * first/second statements can themselves be Sequences, allowing us to chain together an infinite number of Statements.
+ * Example:
+ *      y = 3 + 2; // STATEMENT1
+ *      x = y;     // STATEMENT2
+ */
 public class Sequence implements Statement {
 
     private Statement first;

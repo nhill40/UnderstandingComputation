@@ -6,6 +6,15 @@ import semantics.expression.Expression;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * An If Statement made up of a condition expression (which must evaluate/reduce down to a Boolean), a consequence (the
+ * statement to evaluate/reduce next if the condition is true), and an alternative (the statement to evaluate/reduce
+ * next if the condition is false).  Example:
+ *      if ( x < 5 )  // CONDITION
+ *        y = 5  // CONSEQUENCE
+ *      else
+ *        y = 2  // ALTERNATIVE
+ */
 public class If implements Statement {
 
     private Expression condition;

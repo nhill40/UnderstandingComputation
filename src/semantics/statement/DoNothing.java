@@ -4,6 +4,10 @@ import semantics.expression.Expression;
 
 import java.util.Map;
 
+/**
+ * A DoNothing Statement essentially serves as a marker to indicate that the process of reducing/evaluation this
+ * Statement has reached its logical conclusion (i.e. cannot be any further reduced/evaluated).
+ */
 public class DoNothing implements Statement {
 
     @Override

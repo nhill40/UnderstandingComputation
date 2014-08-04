@@ -6,6 +6,12 @@ import semantics.expression.Expression;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A While statement allows us to repeatedly evaluate/reduce a "body" statement until the evaluation/reduction of the
+ * "condition" indicates false.  Example:
+ *      while (x < 10)
+ *          x = x + 1
+ */
 public class While implements Statement {
 
     private Expression condition;
